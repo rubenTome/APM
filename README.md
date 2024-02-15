@@ -1,14 +1,14 @@
 # Grupo 10 (PanchangAPP).
 ## Integrantes e roles
-Julián Barcia Facal **(CEO)**
-- Encargado de coordinación, comunicación, documentación e xestión do proxecto. Realizará tamén testing de integración, ao igual que participará na unificación e creación de módulos da arquitectura.
-Ruben Tome Moure **(CTO)**
-- Xestionará a xeolocalización, e o uso de sensores e API en caso de ser empregadas.
-Jerónimo José Pardo Rodríguez **(CXO)**
-- Encargado da arquitectura, distrubirá as tarefas a realizar a nivel técnico enntre todo os integrantes.
-David Zambrana Seoane **(COO)**
-- Centrará o seu foco en manter unha correcta UX. 
-##Funcionalidades 
+- Julián Barcia Facal **(CEO)**
+Encargado de coordinación, comunicación, documentación e xestión do proxecto. Realizará tamén testing de integración, ao igual que participará na unificación e creación de módulos da arquitectura.
+- Ruben Tome Moure **(CTO)**
+Xestionará a xeolocalización, e o uso de sensores e API en caso de ser empregadas.
+- David Zambrana Seoane **(CXO)**
+Encargado da arquitectura, distrubirá as tarefas a realizar a nivel técnico enntre todo os integrantes.
+- Jerónimo José Pardo Rodríguez  **(COO)**
+Centrará o seu foco en manter unha correcta UX. 
+## Funcionalidades 
 Este proxecto centrarase no desevolvemento dunha aplicación que facilite un método para a creación e organización de pachangas. 
 A creación destes eventos poderase facer de xeito individual (modelo máis simple) ou en formato de torneo. 
 A creación de cada un destes eventos realizarase sobre un mapa, fixando nunha primeira instancia a localización, e concretando posteriormente outros detalles como poden ser: horario, capacidade máxima, equipamento requerido... Unha vez creado o evento, o resto de usuarios poderán visualizalo e poderán incribirse se así o desexan.
