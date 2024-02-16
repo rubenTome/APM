@@ -22,6 +22,9 @@ Cada vez que se crea unha pachanga nunha localización, esta notificarase aos us
 
 Como posible ampliación, pensouse en que se o usuario conta cunha pulsera ou reloxo que poida medir o seu "rendemento", (pasos, calorías, km percorridos) estes se poidan intregar directamente na app, para ben coñencemento do propio usuario como para o seu uso en estadísticas.
 
+## Target
+El usuario objetivo estaría en una franja de edad comprendida entre los 12 y los 30 años. Dado que se tratan de usuarios bastante jóvenes, el status no sería demasiado alto, y estaría dirigida a cualquier persona, sin importar su género, a la que le guste el deporte, y en especial deportes de equipo. Estas personas estarían buscando en la aplicación facilidades para poder organizar encuentros casuales con otras personas para practicar deporte. Respecto al mercado, sería más bien de nicho, no sería en principio de masas ya que tiene un uso bastante concreto. Por lo tanto, el rendimiento de la aplicación no tiene por que ser muy alto al no ser un mercado demasiado amplio. Nuestro cliente perfecto serían grupos reducidos de personas a las que les gusta practicar deporte y que necesitan contactar entre ellos para organizar encuentros.
+
 
 
 
