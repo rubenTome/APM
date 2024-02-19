@@ -30,6 +30,8 @@ El usuario objetivo estaría en una franja de edad comprendida entre los 12 y lo
 ## Estudio de mercado
 Nuestra aplicación, a diferencia de la gran mayoría disponibles actualmente, no se centra en organizar eventos de forma general, sino en posibilitar encuentros deportivos casuales entre grupos pequeños de personas, y permitir que estas compitan entre ellas en eventos tales como torneos. Para fidelizar a los usuarios, permitiremos crear equipos y formar parte de ellos, además de tener una lista de amigos, por lo tanto, si surge una aplicación similar, el usuario deberá añadir a todos sus contactos y crear de nuevo los equipos, lo cual puede ser tedioso y desmotivará al usuario a la hora de realizar este cambio. Además, se creará un sistema de puntos, que permitirá comprar objetos como imágenes de avatar u otros ítems estéticos asociados a la cuenta, y por lo tanto si el usuario pretende cambiarse de aplicación, perderá todos estos ítems. Para ganar dichos puntos, deberán comprarse con dinero o ganar en rankings o torneos.
 
+![Imagen are you in](https://github.com/rubenTome/APM/tree/main/estudio_mercado/capturas/are_you_in)
+
 
 
 
