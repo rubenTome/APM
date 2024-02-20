@@ -53,6 +53,10 @@ Como se puede ver en estas capturas, assets como el escudo se encuentra detrás 
 El modelo de clasificación y estadísticas se asemeja en gran manera a nuestra idea incial, por lo cual se tomará como referencia.
 ![Pro Organizador](https://github.com/rubenTome/APM/blob/main/estudio_mercado/capturas/Organizador/resultados.png)
 
+##  Diseño de la arquitectura de comunicaciones.
+![Diseño]([https://github.com/rubenTome/APM/blob/main/estudio_mercado/capturas/Organizador/resultados.png](https://github.com/rubenTome/APM/blob/main/dise%C3%B1o_arquitectura/Dise%C3%B1oArqComunicaciones.svg))
+
+
 
 
 
