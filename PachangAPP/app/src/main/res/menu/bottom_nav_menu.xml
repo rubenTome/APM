@@ -12,8 +12,9 @@
         android:title="@string/title_map" />
 
     <item
-        android:id="@+id/navigation_results"
+        android:id="@+id/navigation_notifications"
         android:icon="@drawable/calendar_symbol_svgrepo_com"
         android:title="@string/title_calendar" />
+
 
 </menu>
