@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/skin"
+    android:background="@color/greybk"
     tools:context=".ui.inscribirseEventos.inscribirseEvento">
 
     <ImageView
+
         android:id="@+id/eventphoto"
         android:layout_width="420dp"
         android:layout_height="193dp"
@@ -18,13 +19,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/event" />
+        app:srcCompat="@drawable/trofeo" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Como llegar"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/orangebk"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.949"
@@ -34,18 +37,17 @@
         />
 
     <TextView
-        android:id="@+id/tveventname"
-        android:layout_width="match_parent"
-        android:layout_height="31dp"
         android:background="#40001524"
-        android:paddingLeft="20dp"
-        android:text="Evento 1"
+        android:id="@+id/tveventname"
+        android:layout_width="404dp"
+        android:layout_height="33dp"
+        android:text="Torneo 1"
         android:textColor="@color/white"
+        android:paddingLeft="10dp"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -81,62 +83,6 @@
         app:layout_constraintVertical_bias="0.873" />
 
 
-    <TextView
-        android:id="@+id/signInButton"
-        android:layout_width="171dp"
-        android:layout_height="38dp"
-        android:text="11/22 inscritos"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/eventphoto"
-        app:layout_constraintVertical_bias="0.066" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="33dp"
-
-        android:src="@drawable/ticket_svgrepo_com"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventphoto"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="409dp"
-        android:layout_height="166dp"
-        android:background="@drawable/border"
-        android:text="Comentarios por administador del evento"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventphoto"
-        app:layout_constraintVertical_bias="0.29" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="193dp"
-        android:layout_height="69dp"
-        android:text="Inscribirse"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/eventphoto"
-        app:layout_constraintVertical_bias="0.938" />
-
     <ImageView
         android:background="@drawable/border"
         android:id="@+id/imageView2"
@@ -150,6 +96,14 @@
         app:layout_constraintStart_toStartOf="@+id/eventphoto"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cloud_svgrepo_com" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventphoto" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
