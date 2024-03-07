@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/skin">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -77,6 +78,7 @@
         tools:layout_editor_absoluteY="120dp" />
 
     <com.google.android.material.tabs.TabLayout
+        android:background="@color/greyskin"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="52dp"
