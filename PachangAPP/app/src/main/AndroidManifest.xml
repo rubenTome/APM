@@ -13,17 +13,23 @@
         android:theme="@style/Theme.PanchagAPP"
         tools:targetApi="31">
         <activity
+            android:name=".ui.signin.SignIn"
+            android:exported="false" />
+        <activity
             android:name=".ui.calendar.calendar"
             android:exported="false" />
         <activity
             android:name=".ui.inscribirseEventos.inscribirseTorneo"
             android:exported="false" />
+
         <activity
             android:name=".ui.inscribirseEventos.inscribirseEvento"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

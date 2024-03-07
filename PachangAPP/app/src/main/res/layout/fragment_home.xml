@@ -8,11 +8,15 @@
 
 
     <ImageView
+        android:id="@+id/image_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/_742761_2981188"
-        android:id="@+id/image_container"/>
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+
 
     <Button
         android:id="@+id/button2"
@@ -27,6 +31,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.877" />
+        app:layout_constraintVertical_bias="0.846"
+        android:drawableLeft="@drawable/baseline_add_24"
+        android:drawableTint="@color/skin"
+        />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="417dp"
+        android:layout_height="65dp"
+        android:text="-"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/image_container"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/location1"
+        android:layout_width="109dp"
+        android:layout_height="98dp"
+        android:src="@drawable/baseline_location_on_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_container"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="@+id/image_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.123" />
+
+    <ImageView
+        android:id="@+id/location2"
+        android:layout_width="109dp"
+        android:layout_height="98dp"
+        android:src="@drawable/baseline_location_on_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_container"
+        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintStart_toStartOf="@+id/image_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.565" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
