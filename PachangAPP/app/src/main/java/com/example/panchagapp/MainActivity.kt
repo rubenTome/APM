@@ -40,10 +40,10 @@ class MainActivity : AppCompatActivity() {
 
 
         // The Toolbar defined in the layout has the id "my_toolbar".
-        setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.show()
+        //setSupportActionBar(findViewById(R.id.my_toolbar))
+        //supportActionBar?.show()
     }
-
+/*
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_bar_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -55,5 +55,5 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
+*/
 }

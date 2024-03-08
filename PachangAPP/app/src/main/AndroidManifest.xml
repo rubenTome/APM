@@ -23,9 +23,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.signin.SignIn"
-            android:exported="false" />
+            android:exported="true" />
         <activity
-            android:name=".ui.calendar.calendar"
+            android:name=".ui.calendar.Calendar"
             android:exported="false" />
         <activity
             android:name=".ui.inscribirseEventos.inscribirseTorneo"
@@ -33,6 +33,7 @@
         <activity
             android:name=".ui.inscribirseEventos.inscribirseEvento"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
