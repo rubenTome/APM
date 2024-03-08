@@ -19,6 +19,7 @@
 
 
     <Button
+        android:onClick="buttonClick"
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,10 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.877" />
-        app:layout_constraintVertical_bias="0.846"
-        android:drawableLeft="@drawable/baseline_add_24"
-        android:drawableTint="@color/skin"
-        />
 
     <Button
         android:id="@+id/button4"

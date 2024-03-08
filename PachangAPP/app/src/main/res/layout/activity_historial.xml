@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/skin"
     tools:context=".ui.profile.Historial">
-    <!--
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,10 +28,10 @@
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:src="@tools:sample/avatars" />
+                android:src="@drawable/baseline_account_circle_24" />
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/textView40"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -66,12 +64,12 @@
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:src="@tools:sample/avatars" />
+                android:src="@drawable/baseline_account_circle_24" />
 
         </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view"
+            android:id="@+id/nav_view13"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
@@ -114,14 +112,14 @@
         tools:layout_editor_absoluteY="128dp">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageView25"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@tools:sample/avatars" />
+            android:src="@drawable/baseline_account_circle_24" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textView26"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -154,7 +152,7 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@tools:sample/avatars" />
+            android:src="@drawable/baseline_account_circle_24" />
 
     </LinearLayout>
 
@@ -166,31 +164,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" /><![CDATA[
+        app:menu="@menu/bottom_nav_menu" />
 
-
-
-    ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="160dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="104dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-
-
-    ]]>
 
     <com.google.android.material.tabs.TabLayout
         android:background="@color/greyskin"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="52dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -207,5 +188,4 @@
             tools:layout_editor_absoluteY="45dp" />
 
     </com.google.android.material.tabs.TabLayout>
-  -->
 </androidx.constraintlayout.widget.ConstraintLayout>

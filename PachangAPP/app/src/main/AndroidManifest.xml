@@ -22,7 +22,7 @@
             android:name=".ui.crearEvento.CrearEvento"
             android:exported="false" />
         <activity
-            android:name=".ui.signin.SignIn"
+            android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".ui.calendar.Calendar"
@@ -35,7 +35,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.signin.SignIn"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
