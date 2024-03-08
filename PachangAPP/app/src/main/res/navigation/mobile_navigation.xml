@@ -8,18 +8,50 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.panchagapp.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_listaeventos"
+            app:destination="@id/navigation_listaeventos" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_evento2"
+            app:destination="@id/navigation_evento" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_creareventos"
+            app:destination="@id/navigation_creareventos" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_torneo"
+            app:destination="@id/navigation_torneo" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.panchagapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.panchagapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_listaeventos"
+        android:name="com.example.panchagapp.ui.listaeventos.ListaEventosFragment"
+        tools:layout="@layout/fragment_lista_eventos" />
+
+    <fragment
+        android:id="@+id/navigation_evento"
+        android:name="com.example.panchagapp.ui.inscribirseEventos.inscribirseEventoFragment"
+        tools:layout="@layout/fragment_inscribirse_evento" />
+
+    <fragment
+        android:id="@+id/navigation_torneo"
+        android:name="com.example.panchagapp.ui.inscribirseEventos.inscribirseTorneoFragment"
+        tools:layout="@layout/fragment_inscribirse_torneo" />
+
+    <fragment
+        android:id="@+id/navigation_creareventos"
+        android:name="com.example.panchagapp.ui.crearEvento.CrearEventoFragment"
+        tools:layout="@layout/fragment_crear_evento" />
+
 </navigation>

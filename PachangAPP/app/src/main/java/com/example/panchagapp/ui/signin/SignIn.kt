@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import com.example.panchagapp.MainActivity
 import com.example.panchagapp.R
 
@@ -17,6 +18,11 @@ class SignIn : AppCompatActivity() {
         val loginbutton = findViewById<Button>(R.id.signInButton)
          loginbutton.setOnClickListener {
              val Intent = Intent(this,MainActivity::class.java)
+             Toast.makeText(
+                 this@SignIn,
+                 "Login Correcto!",
+                 Toast.LENGTH_SHORT
+             ).show()
              startActivity(Intent)
          }
 

@@ -1,13 +1,23 @@
 package com.example.panchagapp.ui.home
 
+import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.example.panchagapp.R
 import com.example.panchagapp.databinding.FragmentHomeBinding
+import com.example.panchagapp.ui.listaeventos.ListaEventosFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
@@ -22,40 +32,32 @@ class HomeFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val eventbutton = root.findViewById<Button>(R.id.eventbutton)
+        val listbutton = root.findViewById<Button>(R.id.listbutton)
+        val location1 = root.findViewById<ImageView>(R.id.location1)
+        val location2 = root.findViewById<ImageView>(R.id.location2)
+
+        eventbutton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_creareventos)
+        }
+        location1.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_evento2)
+        }
+        location2.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_torneo)
+        }
+
+        listbutton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_listaeventos)
+        }
 
         return root
     }
