@@ -1,15 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- "Mark Favorite", must appear as action button if possible. -->
-    <item
-        android:id="@+id/action_favorite"
-        android:title="@string/action_favorite"
-        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/appbar_menu"
+        android:title="menu"
+        app:showAsAction="always"
+        android:icon="@drawable/menu_svgrepo_com"
+        android:iconTint="@color/orange" />
 
-    <!-- Settings, must always be in the overflow. -->
-    <item android:id="@+id/action_settings"
-        android:title="test"
-        app:showAsAction="never"/>
+    <item android:id="@+id/appbar_profile"
+        android:title="profile"
+        app:showAsAction="always"
+        android:icon="@drawable/baseline_account_circle_24"
+        android:iconTint="@color/orange"/>
+
+    <item android:id="@+id/appbar_coins"
+        android:title="coins"
+        app:showAsAction="always"
+        android:icon="@drawable/football_game"
+        android:iconTint="@color/orange"/>
 
 </menu>

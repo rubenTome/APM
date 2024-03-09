@@ -54,4 +54,22 @@
         android:name="com.example.panchagapp.ui.crearEvento.CrearEventoFragment"
         tools:layout="@layout/fragment_crear_evento" />
 
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.panchagapp.ui.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_historial"
+            app:destination="@id/navigation_historial" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_historial"
+        android:name="com.example.panchagapp.ui.profile.HistorialFragment"
+        tools:layout="@layout/fragment_historial" >
+        <action
+            android:id="@+id/action_navigation_historial_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+
 </navigation>
