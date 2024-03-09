@@ -72,4 +72,16 @@
             app:destination="@id/navigation_profile" />
     </fragment>
 
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.panchagapp.ui.calendar.CalendarFragment"
+        tools:layout="@layout/fragment_calendar" />
+    <action
+        android:id="@+id/action_global_navigation_profile"
+        app:destination="@id/navigation_profile"
+        app:enterAnim="@anim/slide_in_top"
+        app:exitAnim="@anim/slide_out_bottom"
+        app:popEnterAnim="@anim/slide_in_bottom"
+        app:popExitAnim="@anim/slide_out_top" />
+
 </navigation>

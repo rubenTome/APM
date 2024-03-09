@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/appbar_menu"
-        android:title="menu"
+    <item android:id="@+id/appbar_coins"
+        android:title="coins"
         app:showAsAction="always"
-        android:icon="@drawable/menu_svgrepo_com"
-        android:iconTint="@color/orange" />
+        android:icon="@drawable/coin_svgrepo_com"
+        android:iconTint="@color/orange"/>
 
     <item android:id="@+id/appbar_profile"
         android:title="profile"
@@ -13,10 +13,6 @@
         android:icon="@drawable/baseline_account_circle_24"
         android:iconTint="@color/orange"/>
 
-    <item android:id="@+id/appbar_coins"
-        android:title="coins"
-        app:showAsAction="always"
-        android:icon="@drawable/football_game"
-        android:iconTint="@color/orange"/>
+
 
 </menu>
