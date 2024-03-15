@@ -103,7 +103,11 @@
     <fragment
         android:id="@+id/navigation_creareventos"
         android:name="com.example.panchagapp.ui.crearEvento.CrearEventoFragment"
-        tools:layout="@layout/fragment_crear_evento" />
+        tools:layout="@layout/fragment_crear_evento" >
+        <action
+            android:id="@+id/action_navigation_creareventos_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
