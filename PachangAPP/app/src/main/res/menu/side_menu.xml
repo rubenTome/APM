@@ -8,12 +8,12 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/sidenav_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="Home"/>
 
         <item
-            android:id="@+id/nav_settings"
+            android:id="@+id/sidenav_settings"
             android:icon="@drawable/settings_outlined_wheel_svgrepo_com"
             android:title="Settings"/>
 
@@ -24,20 +24,16 @@
 
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/sidenav_share"
                 android:icon="@drawable/share_svgrepo_com"
                 android:title="Share"/>
 
             <item
-                android:id="@+id/nav_about"
+                android:id="@+id/sidenav_about"
                 android:icon="@drawable/octicons_mark_github"
                 android:title="About Us"/>
-            <item
-                android:id="@+id/logout"
-                android:icon="@drawable/logout"
-                android:title="Logout"/>
-        </menu>
 
+        </menu>
     </item>
 
 </menu>

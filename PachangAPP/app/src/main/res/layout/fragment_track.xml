@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.direccion.TrackFragment">
+
+    <ImageView
+        android:id="@+id/image_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/_742761_2981188"
+        android:scaleType="centerCrop"
+        android:layout_above="@id/tvdirections"/>
+
+    <TextView
+        android:id="@+id/tvdirections"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:text="10km (20 min)"
+        android:textSize="40dp"/>
+
+</RelativeLayout>

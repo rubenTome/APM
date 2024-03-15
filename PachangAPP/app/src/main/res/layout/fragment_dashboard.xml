@@ -2,148 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rankinglayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/skin"
-    tools:context=".ui.dashboard.DashboardFragment">
+    android:background="@color/skin">
 
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/rankingtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Torneos en activo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="219dp"
+        android:layout_marginBottom="23dp"
+        android:text="Ranking"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"/>
+        app:layout_constraintBottom_toTopOf="@+id/rankingrv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rankingrv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textViewTitle"
-        android:layout_marginTop="23dp">
-
-        <LinearLayout
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle"
-                android:divider="@drawable/empty_tall_divider"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:background="@drawable/list_item_rounded"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/baseline_account_circle_24" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:text="Torneo 2" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:clickable="true"
-                        android:src="@android:drawable/ic_input_add"
-                        app:backgroundTint="#303030" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:background="@drawable/list_item_rounded"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <ImageView
-                        android:id="@+id/imageView1"
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/baseline_account_circle_24" />
-
-                    <TextView
-                        android:id="@+id/textView1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:text="Torneo 1" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton1"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:clickable="true"
-                        android:src="@android:drawable/ic_input_add"
-                        app:backgroundTint="#303030" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:background="@drawable/list_item_rounded"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/baseline_account_circle_24" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:text="Torneo 2" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton3"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:clickable="true"
-                        android:src="@android:drawable/ic_input_add"
-                        app:backgroundTint="#303030" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="558dp"
+        android:layout_below="@+id/rankingtitle"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.662"
+        tools:listitem="@layout/layout_player_list_item" />
 
 </RelativeLayout>

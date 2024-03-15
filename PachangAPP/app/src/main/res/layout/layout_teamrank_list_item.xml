@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- Team Name -->
+    <TextView
+        android:id="@+id/textViewTeamName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:text="Team Name"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="4dp"/>
+
+    <!-- Played Matches -->
+    <TextView
+        android:id="@+id/textViewPlayedMatches"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="4dp"/>
+
+    <!-- Wins -->
+    <TextView
+        android:id="@+id/textViewWins"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="4dp"/>
+
+    <!-- Draws -->
+    <TextView
+        android:id="@+id/textViewDraws"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="4dp"/>
+
+    <!-- Losses -->
+    <TextView
+        android:id="@+id/textViewLosses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="4dp"/>
+
+    <!-- Goals Scored -->
+    <TextView
+        android:id="@+id/textViewGoalsScored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:textSize="16sp"
+        android:gravity="center_vertical"/>
+
+</LinearLayout>

@@ -6,16 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
+import com.example.panchagapp.ui.inscribirseEventos.TeamAdapterClass
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class ListaEventosFragment : Fragment() {
+class ListaEventosFragment : Fragment(){
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -55,6 +60,7 @@ class ListaEventosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val eventbutton = view.findViewById<Button>(R.id.eventbutton)
         dataInitialize()
         val layoutManager = LinearLayoutManager(context)
         recyclerView = view.findViewById(R.id.eventrv)
@@ -62,6 +68,25 @@ class ListaEventosFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         adapter = EventosAdapterClass(eventosArrayList)
         recyclerView.adapter = adapter
+
+        eventbutton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_listaeventos_to_navigation_creareventos)
+            Toast.makeText(activity, "Crear Evento", Toast.LENGTH_SHORT).show()
+        }
+        adapter.setOnItemClickListener(object: EventosAdapterClass.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                val selectedItem = eventosArrayList[position]
+                if (selectedItem.eventTitle.toString().startsWith("Torneo")) {
+                    Toast.makeText(activity, "Seleccionado " + selectedItem.eventTitle.toString(), Toast.LENGTH_SHORT).show()
+                    val directions = ListaEventosFragmentDirections.actionNavigationListaeventosToNavigationTorneo(selectedItem.eventTitle.toString())
+                    findNavController().navigate(directions)
+                } else if (selectedItem.eventTitle.toString().startsWith("Evento")) {
+                    Toast.makeText(activity, "Seleccionado " + selectedItem.eventTitle.toString(), Toast.LENGTH_SHORT).show()
+                    val directions = ListaEventosFragmentDirections.actionNavigationListaeventosToNavigationEvento(selectedItem.eventTitle.toString())
+                    findNavController().navigate(directions)
+                }
+            }
+        })
     }
 
     private fun dataInitialize() {
@@ -89,4 +114,5 @@ class ListaEventosFragment : Fragment() {
             eventosArrayList.add(dataClass)
         }
     }
+
 }

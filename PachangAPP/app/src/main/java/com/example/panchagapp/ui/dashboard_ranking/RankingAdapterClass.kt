@@ -1,4 +1,4 @@
-package com.example.panchagapp.ui.listaeventos
+package com.example.panchagapp.ui.dashboard_ranking
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
-import com.example.panchagapp.ui.inscribirseEventos.TeamAdapterClass
 
-class EventosAdapterClass (private val dataList: ArrayList<EventosDataClass>):
-    RecyclerView.Adapter<EventosAdapterClass.ViewHolderClass>() {
+class RankingAdapterClass (private val dataList: ArrayList<RankingDataClass>):
+    RecyclerView.Adapter<RankingAdapterClass.ViewHolderClass>() {
 
     private lateinit var mlistener : onItemClickListener
 
@@ -26,7 +25,7 @@ class EventosAdapterClass (private val dataList: ArrayList<EventosDataClass>):
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layour_event_list_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_player_list_item, parent, false)
         return ViewHolderClass(itemView, mlistener )
     }
 
@@ -36,13 +35,13 @@ class EventosAdapterClass (private val dataList: ArrayList<EventosDataClass>):
 
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
         val currentItem = dataList[position]
-        holder.rvimage.setImageResource(currentItem.eventImage)
-        holder.teamname.text = currentItem.eventTitle
+        holder.rvimage.setImageResource(currentItem.playerImage)
+        holder.teamname.text = (currentItem.playerTitle)
     }
 
     class ViewHolderClass(itemView: View,listener: onItemClickListener): RecyclerView.ViewHolder(itemView) {
-        val rvimage:ImageView = itemView.findViewById(R.id.eventlogo)
-        val teamname:TextView = itemView.findViewById(R.id.eventmname)
+        val rvimage:ImageView = itemView.findViewById(R.id.playerlogo)
+        val teamname:TextView = itemView.findViewById(R.id.playername)
         init {
             itemView.setOnClickListener{
                 listener.onItemClick(adapterPosition)

@@ -1,28 +1,27 @@
-package com.example.panchagapp.ui.profile
+package com.example.panchagapp.ui.notifications_calendar
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
-import com.example.panchagapp.ui.listaeventos.EventosAdapterClass
-import com.example.panchagapp.ui.listaeventos.EventosDataClass
+import com.example.panchagapp.ui.profile.HistorialAdapterClass
+import com.example.panchagapp.ui.profile.HistorialDataClass
 
-// TODO: Rename parameter arguments, choose names that match
+/**
+ * A simple [Fragment] subclass.
+ * Use the [PartidosFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HistorialFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HistorialFragment : Fragment() {
+class PartidosFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -66,7 +65,7 @@ class HistorialFragment : Fragment() {
         companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            HistorialFragment().apply {
+            PartidosFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -100,7 +99,13 @@ class HistorialFragment : Fragment() {
         )
 
         for (i in team1imagelist.indices) {
-            val dataClass = HistorialDataClass(team1imagelist[i], teamnamelist[i],resultList[i],teamnamelist[i],team1imagelist[i])
+            val dataClass = HistorialDataClass(
+                team1imagelist[i],
+                teamnamelist[i],
+                resultList[i],
+                teamnamelist[i],
+                team1imagelist[i]
+            )
             historialArrayList.add(dataClass)
         }
     }

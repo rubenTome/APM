@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.replace
@@ -17,11 +18,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.panchagapp.R
 import com.example.panchagapp.databinding.FragmentHomeBinding
-import com.example.panchagapp.ui.listaeventos.ListaEventosFragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.example.panchagapp.ui.listaeventos.ListaEventosFragmentDirections
+
 
 class HomeFragment : Fragment() {
 
@@ -47,16 +45,22 @@ class HomeFragment : Fragment() {
 
         eventbutton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_creareventos)
+            Toast.makeText(activity, "Crear Evento", Toast.LENGTH_SHORT).show()
         }
         location1.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_home_to_navigation_evento2)
+            Toast.makeText(activity, "Datos Evento", Toast.LENGTH_SHORT).show()
+            val directions = HomeFragmentDirections.actionNavigationHomeToNavigationEvento2("Evento 1")
+            findNavController().navigate(directions)
         }
         location2.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_home_to_navigation_torneo)
+            val directions = HomeFragmentDirections.actionNavigationHomeToNavigationTorneo("Torneo 1")
+            Toast.makeText(activity, "Datos Torneo", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(directions)
         }
 
         listbutton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_listaeventos)
+            Toast.makeText(activity, "Lista de Eventos", Toast.LENGTH_SHORT).show()
         }
 
         return root

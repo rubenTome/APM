@@ -1,10 +1,15 @@
 package com.example.panchagapp.ui.inscribirseEventos
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
@@ -21,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [inscribirseTorneoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class inscribirseTorneoFragment : Fragment() {
+class inscribirseTorneoFragment : Fragment()  {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -30,6 +35,7 @@ class inscribirseTorneoFragment : Fragment() {
     lateinit var teamimageList: Array<Int>
     lateinit var teamnameList: Array<String>
     lateinit var teamplayersList: Array<String>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,16 +54,6 @@ class inscribirseTorneoFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment inscribirseTorneoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
         fun newInstance(param1: String, param2: String) =
             inscribirseTorneoFragment().apply {
                 arguments = Bundle().apply {
@@ -67,14 +63,46 @@ class inscribirseTorneoFragment : Fragment() {
             }
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dataInitialize()
         val layoutManager = LinearLayoutManager(context)
+        var trackbutton = view.findViewById<Button>(R.id.trackbutton)
+
+        trackbutton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_torneo_to_navigation_direction)
+            Toast.makeText(activity, "Como llegar a localizacion!", Toast.LENGTH_SHORT).show()
+        }
+
+        var tvname = view.findViewById<TextView>(R.id.tveventname)
+        val bundle = arguments
+        if (bundle == null) {
+            Log.d("Confirmation", "FragmentTorneo sin arguments")
+            return
+        }
+        val args = inscribirseEventoFragmentArgs.fromBundle(bundle)
+        if(args.eventName.isNullOrBlank()){
+            tvname.text = "Torneo sin Nombre"
+        }
+        else {
+            tvname.text = args.eventName
+        }
+
         recyclerView = view.findViewById(R.id.teamrv)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = TeamAdapterClass(dataList)
+        var adapter  = TeamAdapterClass(dataList)
+        recyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object: TeamAdapterClass.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                val selectedItem = dataList[position]
+                findNavController().navigate(R.id.action_navigation_torneo_to_navigation_home)
+                Toast.makeText(activity, "Inscrito en " + selectedItem.teamTitle.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     private fun dataInitialize() {
@@ -111,4 +139,6 @@ class inscribirseTorneoFragment : Fragment() {
             dataList.add(dataClass)
         }
     }
+
+
 }

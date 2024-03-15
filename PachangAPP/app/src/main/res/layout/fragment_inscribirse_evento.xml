@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/event" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/trackbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Como llegar"
@@ -128,7 +128,7 @@
         app:layout_constraintVertical_bias="0.293" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttoninscribirse"
         android:layout_width="193dp"
         android:layout_height="69dp"
         android:text="Inscribirse"

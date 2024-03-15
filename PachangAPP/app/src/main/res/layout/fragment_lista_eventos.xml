@@ -19,7 +19,7 @@
         tools:listitem="@layout/layout_team_list_item" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@id/eventbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/baseline_add_24"
