@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/greyskin"
+            android:background="?backgroundColor"
             app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="left"
                 android:gravity="center_vertical"
-                android:src="@drawable/logout"></ImageView>
+                android:src="@drawable/logout"/>
             <TextView
                 android:id="@+id/logouttv"
                 android:layout_width="match_parent"

@@ -8,7 +8,7 @@
     app:cardBackgroundColor="?android:panelColorBackground"
     app:cardCornerRadius="10dp"
     android:padding="0dp"
-    android:layout_margin="20dp"
+    android:layout_margin="15dp"
     tools:ignore="MissingDefaultResource">
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
-import com.example.panchagapp.ui.inscribirseEventos.TeamAdapterClass
 
 class EventosAdapterClass (private val dataList: ArrayList<EventosDataClass>):
     RecyclerView.Adapter<EventosAdapterClass.ViewHolderClass>() {
@@ -26,7 +25,7 @@ class EventosAdapterClass (private val dataList: ArrayList<EventosDataClass>):
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layour_event_list_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_event_list_item, parent, false)
         return ViewHolderClass(itemView, mlistener )
     }
 

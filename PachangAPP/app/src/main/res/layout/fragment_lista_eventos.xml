@@ -5,14 +5,17 @@
     android:id="@+id/eventslayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/skin"
+    android:background="?backgroundColor"
     tools:context=".ui.listaeventos.ListaEventosFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/eventrv"
-        android:layout_width="391dp"
-        android:layout_height="648dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -22,14 +25,14 @@
         android:id="@id/eventbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="100dp"
         android:drawableLeft="@drawable/baseline_add_24"
-
-        android:drawableTint="@color/white"
+        android:drawableTint="?backgroundColor"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="20dp"
         android:text="Evento"
+        android:textColor="?backgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.895"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/eventrv"
-        app:layout_constraintVertical_bias="0.915" />
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

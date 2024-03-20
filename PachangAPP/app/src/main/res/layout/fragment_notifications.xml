@@ -1,41 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/eventslayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/skin"
+    android:background="?backgroundColor"
     tools:context=".ui.listaeventos.ListaEventosFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/eventrv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView7"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.493"
-        tools:listitem="@layout/layout_team_list_item" />
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="223dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="92dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:text="Torneos En Activo"
-        app:layout_constraintBottom_toTopOf="@+id/eventrv"
+        android:textColor="?colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/eventrv"
+        android:layout_width="416dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/textView7"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:listitem="@layout/layout_team_list_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Primary background color. -->
-        <item name="android:colorBackground">@color/white</item>
+        <item name="backgroundColor">@color/white</item>
         <item name="android:panelColorBackground">@color/material_dynamic_neutral70</item>
         <item name="colorOnBackground">@color/greyblue</item>
         <!-- Customize your theme here. -->

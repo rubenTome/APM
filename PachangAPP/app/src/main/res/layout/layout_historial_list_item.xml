@@ -8,7 +8,7 @@
     app:cardBackgroundColor="?android:panelColorBackground"
     app:cardCornerRadius="10dp"
     android:padding="0dp"
-    android:layout_margin="20dp"
+    android:layout_margin="15dp"
     tools:ignore="MissingDefaultResource">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,11 +54,11 @@
                 android:id="@+id/result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="?colorPrimary"
+                android:gravity="center"
+                android:background="@drawable/background_rounded"
                 android:paddingHorizontal="5dp"
                 android:text="1-2"
-                android:textColor="?android:colorBackground"
+                android:textColor="?backgroundColor"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +74,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:text="Equipo 2"
+                android:textAlignment="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/result"
