@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.panchagapp.R
@@ -44,6 +46,11 @@ class CrearEventoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val spinner = view.findViewById<Spinner>(R.id.spinner)
+        val items = arrayOf("Evento Casual", "Torneo")
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, items)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
         val crearbutton = view.findViewById<Button>(R.id.crearevento)
         crearbutton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_creareventos_to_navigation_home)
