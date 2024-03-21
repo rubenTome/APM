@@ -32,6 +32,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
-        tools:listitem="@layout/layout_team_list_item" />
+        tools:listitem="@layout/layout_event_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
