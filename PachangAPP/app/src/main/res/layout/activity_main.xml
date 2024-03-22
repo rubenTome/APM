@@ -57,7 +57,9 @@
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
+        app:defaultNavHost="true"
         app:menu="@menu/side_menu">
+
 
 
         <LinearLayout

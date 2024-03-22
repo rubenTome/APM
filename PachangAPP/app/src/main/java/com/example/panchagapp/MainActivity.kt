@@ -47,6 +47,10 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val logoutll : LinearLayout = binding.logoutll
         drawerlayout= findViewById(R.id.drawer_layout)
 
+        setSupportActionBar(toolbar)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar()?.setDisplayShowTitleEnabled(false);
+
         logoutll.setOnClickListener {
             val Intent = Intent(this,SignIn::class.java)
             Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
@@ -54,22 +58,10 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         }
 
-
-
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(R.id.fragmentlayout, HomeFragment()).commit()
             sidemenu.setCheckedItem(R.id.sidenav_home)
         }
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.sidenav_home, R.id.sidenav_settings, R.id.sidenav_share),
-            drawerlayout
-        )
-
-        toggle =  ActionBarDrawerToggle(this,drawerlayout, toolbar, R.string.open,R.string.close)
-        drawerlayout.addDrawerListener(toggle)
-        toggle.syncState()
-
 
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -79,10 +71,11 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         sidemenu.setupWithNavController(navController)
         sidemenu.setNavigationItemSelectedListener(this)
 
-
-        setSupportActionBar(toolbar)
-        getSupportActionBar()?.setDisplayShowTitleEnabled(false);
-        setupActionBarWithNavController(navController)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.navigation_home, R.id.sidenav_settings),
+            drawerlayout
+        )
+        setupActionBarWithNavController(navController,appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -119,7 +112,8 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             val action = MobileNavigationDirections.actionGlobalViewPagerFragment("APPBAR")
             navController.navigate(action)
             return true
-        } else {
+        }   else
+        {
             return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
         }
     }
