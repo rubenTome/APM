@@ -3,19 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/greyskin"
+    android:background="@color/greybk"
     android:padding="16dp">
 
     <!-- Profile Image -->
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/football_game"
-        android:scaleType="centerCrop"
-        android:layout_gravity="start"
-        android:contentDescription="Profile Image" />
 
     <!-- User Info -->
+    <ImageView
+        android:id="@+id/headerphoto"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="start"
+        android:contentDescription="Profile Image"
+        android:scaleType="centerCrop"
+        android:src="@drawable/football_game" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,18 +26,20 @@
 
         <!-- User Name -->
         <TextView
+            android:id="@+id/headername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="John Doe"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="18sp"/>
 
         <!-- Email -->
         <TextView
+            android:id="@+id/headeremail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="john.doe@example.com"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="14sp"/>
 
     </LinearLayout>
