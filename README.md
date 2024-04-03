@@ -61,7 +61,7 @@ El modelo de clasificación y estadísticas se asemeja en gran manera a nuestra 
 ### Actividades
 Solo se cuenta con 2 actividades en este proyecto:
 - **Actividad de Login:** Pantalla inicial en la que solo se muestra el botón de login con Google.
-- **Actividad Principal_:** Pantalla principal sobre la que se ejecuta la totalidad de la aplicación, sobre esta se servirán todos los fragments a emplear.
+- **Actividad Principal:** Pantalla principal sobre la que se ejecuta la totalidad de la aplicación, sobre esta se servirán todos los fragments a emplear.
 ### Fragment 
 Nuestra aplicación se va componer mayoritariamente de fragments ya que tenemos tanto una toolbar con un NavDrawer, como un BottomNavigation que nos permitirán navegar entre ellos. 
 En el NavDrawer se mostrará un header con la información de usuario y diversas opciones:
