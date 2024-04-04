@@ -4,5 +4,7 @@ https://www.figma.com/proto/JTsYu1bFLbVatrllt97Obd/PachangAPP?type=design&t=bv8x
 ###  Alternativa
 Si no funciona este enlace, se puede acceder a este funcionamiento al clickar en el botón de play en la esquina  superior derecha de la pantalla. (La app no deja compartir solo el prototipo sin pagar) del siguiente enlace:
 https://www.figma.com/file/JTsYu1bFLbVatrllt97Obd/PachangAPP?type=design&node-id=0%3A1&mode=design&t=PE1iXR8DexphtxaE-1
-##  Mockup con flechas indicativas del workflow
-![Diseño](https://github.com/rubenTome/APM/blob/main/mockups/PachangAPP.svg)
+##  Mockup con flechas indicativas del workflow telefono
+![Diseño](https://github.com/rubenTome/APM/blob/main/mockups/Telefono/PachangAPP.svg)
+##  Mockup con flechas indicativas del workflow Tablet
+![Diseño](https://github.com/rubenTome/APM/blob/main/mockups/Tablet/PachangAPP%20(tablet).svg)
