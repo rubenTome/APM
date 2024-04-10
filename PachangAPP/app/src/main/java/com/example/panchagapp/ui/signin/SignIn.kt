@@ -32,7 +32,8 @@ class SignIn : AppCompatActivity() {
 
          val loginbutton = findViewById<Button>(R.id.signInButton)
          loginbutton.setOnClickListener {
-             signIn()
+             //signIn()
+             startActivity(Intent(this, MainActivity::class.java))
          }
 
     }
