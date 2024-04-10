@@ -37,7 +37,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 
-class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -47,6 +47,7 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private var isFragmentOpen = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,9 +95,6 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
 
 
-
-
-
         setSupportActionBar(toolbar)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar()?.setDisplayShowTitleEnabled(false);
@@ -131,6 +129,8 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
 
     }
+
+
     private fun signOutAndStartSignInActivity() {
         mAuth.signOut()
 
