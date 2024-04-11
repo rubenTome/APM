@@ -89,11 +89,16 @@ A continuación se enumeran todos los fragments y su utilidad:
 - **Fragment Partidos**: Desde el Fragment de calendario si se accede a uno de los eventos este será el fragment que se muestre por defecto. En el se puede ver los partidos de este evento y sus resultados, en caso de ser dueño del evento puede modificar los resultados. Cuenta con un TabLayout en la parte superior para cambiar entre este fragment y el de clasificiación de equipos.
 - **Fragment Clasificiación**: Fragment accesible desde el TabLayout anteriormente explicado. Muestra una clasificación de los equipos dentro del torneo, con datos como Partidos Juagos, Victorias, Empates, Derrotas y Diferencia de Goles.
 
+## Tareas Segundo Plano
 ### Servicios
-En cuanto al uso de servicios no se tiene realmente claro si van a ser necesarios. Algunas de las opciones que se habían pensado podrían ser la siguientes:
-- Tras crear un evento, generar un servicio que mantenga la base de datos actualizada periodicamente. Aunque realmente se podría gestionar sin ella
-- En la fecha del evento, si se está inscrito generar una notificación que sirva de recordatorio y que pueda contar con diversas dentro como pueden ser, acceso directo a la funcionalidad del botón Como llegar. 
-
+Los servicios que vamos a emplear en este caso están fuertemente relacionados con las API que vamos a emplear:
+- Firebase Auuthentication: Vamos a emplear el modelo de autenticación que nos distribuye Firebase. 
+- FireBase RealTimeDatabse: Vamos a emplear la base de datos en tiempo real de firebase para todos los datos que se van a guardar. 
+- Google Maps (Location service): Mediante la API que distribuye Google, vamos a tener en un fragment un mapa activo constantemente que actualice su localización en tiempo real. Esto último se podría implementar con corrutinas pero el propio service proporciona métodos para poder realizarlo sin ellas.
+### Corrutinas 
+En cuanto a corrutinas, para evitar bloquear el Thread principal su uso se va a centrar en los puntos que pueden resultar más "complejos".
+- Se buscará que las peticiones a la base de datos de Firebase, sean de escritura o lectura se ejecuten mediante corrutinas evitando sobrecargar el thread principal.
+- Las peticiones a la API del tiempo también se van a hacer mediante corrutinas. Consideranos que no tiene sentido atrasar la aparición de la pantalla de información de evento, solo porque la información del tiempo no se haya cargado todavía.
 
 
 
