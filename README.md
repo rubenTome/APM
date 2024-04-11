@@ -91,14 +91,14 @@ A continuación se enumeran todos los fragments y su utilidad:
 
 ## Tareas Segundo Plano
 ### Servicios
-Los servicios que vamos a emplear en este caso están fuertemente relacionados con las API que vamos a emplear:
-- Firebase Auuthentication: Vamos a emplear el modelo de autenticación que nos distribuye Firebase. 
-- FireBase RealTimeDatabse: Vamos a emplear la base de datos en tiempo real de firebase para todos los datos que se van a guardar. 
-- Google Maps (Location service): Mediante la API que distribuye Google, vamos a tener en un fragment un mapa activo constantemente que actualice su localización en tiempo real. Esto último se podría implementar con corrutinas pero el propio service proporciona métodos para poder realizarlo sin ellas.
+Los servicios que vamos a implementar en este caso están fuertemente relacionados con las API que vamos a emplear:
+- Firebase Auuthentication: Vamos a emplear el modelo de autenticación que nos distribuye Firebase para ello haremos uso del servicio de google **play-services-auth**. Con este podremos conseguir que todos los usuarios que vayan a utilizar la aplicación se inscriban con una cuenta de Google, que podremos gestionar dede Firebase. 
+- FireBase RealTimeDatabse: Vamos a emplear la base de datos en tiempo real de Firebase para todos los datos que se van a guardar. 
+- Google Maps (Location service): Mediante la API que distribuye Google, vamos a tener en un fragment un mapa activo constantemente sobre el que se desarolla gran parte de nuestra aplicación. Este service **play-services-location**, tras gestionar los permisos de localización, nos permite mantenar un mapa actualizado con eventos antiguos y nuevos por igual. Además en el mapa se mostrará la localización del usuario en todo momento. Se buscará en un futuro ampliar el uso de este mapa y la localización para la creación de rutas de ayuda para saber como llegar a cada uno de los eventos.
 ### Corrutinas 
 En cuanto a corrutinas, para evitar bloquear el Thread principal su uso se va a centrar en los puntos que pueden resultar más "complejos".
 - Se buscará que las peticiones a la base de datos de Firebase, sean de escritura o lectura se ejecuten mediante corrutinas evitando sobrecargar el thread principal.
-- Las peticiones a la API del tiempo también se van a hacer mediante corrutinas. Consideranos que no tiene sentido atrasar la aparición de la pantalla de información de evento, solo porque la información del tiempo no se haya cargado todavía.
+- Cada vez que accedemos a la información de un evento queremos que entre su información se muestre el tiempo que hará ese día. Para ello hacemos uso de OpenWeatherMap. Esta es una API que combinando su uso con RetroFit nos permite hacer consultas directamente desde la APP. Como no queremos esperar a la respuesta de estas consultas para poder abrir la pantalla, estas peticiones GET se han aislado en una corrutina. Esto permite a la aplicación cargar el fragment correspondiente aunque el ImageView y TextViews con los datos no hayan recibido los datos. Así se puede ver que al acceder al Fragment del torneo 1 la información sobre el tiempo aparece unos segundos más tarde. Evitamos por lo tanto con esta petición asíncrona bloquear el main thread.
 
 
 
