@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/skin</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
         <!-- Primary background color. -->
         <item name="backgroundColor">@color/white</item>
         <item name="android:panelColorBackground">@color/material_dynamic_neutral70</item>

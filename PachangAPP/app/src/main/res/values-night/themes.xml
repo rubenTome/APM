@@ -12,10 +12,21 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!-- Primary background color. -->
+        <item name="backgroundColor">@color/white</item>
+        <item name="android:panelColorBackground">@color/material_dynamic_neutral70</item>
+        <item name="colorOnBackground">@color/greyblue</item>
+        <!-- Customize your theme here. -->
     </style>
   <!-- Base application theme. -->
     <style name="Base.Theme.PanchagAPP" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+    <style name="Theme.PanchagAPP.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.PanchagAPP.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.PanchagAPP.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 </resources>
