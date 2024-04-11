@@ -12,9 +12,18 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.panchagapp.MainActivity
 import com.example.panchagapp.R
+import com.example.panchagapp.WeatherService
 import com.example.panchagapp.ui.listaeventos.EventosAdapterClass
 import com.example.panchagapp.ui.listaeventos.EventosDataClass
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +44,8 @@ class inscribirseTorneoFragment : Fragment()  {
     lateinit var teamimageList: Array<Int>
     lateinit var teamnameList: Array<String>
     lateinit var teamplayersList: Array<String>
+    private val apiKey = "3e3d57cbd2e191d212257ab99f6ab698"
+    private lateinit var weatherService: WeatherService
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +54,14 @@ class inscribirseTorneoFragment : Fragment()  {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        weatherService = Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(WeatherService::class.java)
+
+        // Replace "CityName" with the desired city
+
     }
 
     override fun onCreateView(
@@ -50,7 +69,14 @@ class inscribirseTorneoFragment : Fragment()  {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inscribirse_torneo, container, false)
+        val rootview = inflater.inflate(R.layout.fragment_inscribirse_torneo, container, false)
+        GlobalScope.launch(Dispatchers.IO) {
+            val weatherData = weatherService.getWeather("Santiago de Compostela", apiKey)
+            withContext(Dispatchers.Main) {
+                updateUI(rootview,weatherData)
+            }
+        }
+        return rootview
     }
 
     companion object {
@@ -62,6 +88,7 @@ class inscribirseTorneoFragment : Fragment()  {
                 }
             }
     }
+
 
 
 
@@ -103,7 +130,17 @@ class inscribirseTorneoFragment : Fragment()  {
             }
         })
 
+
+
     }
+    private fun updateUI(view: View,weatherData: MainActivity.WeatherData) {
+        view.findViewById<TextView>(R.id.weathername).text = weatherData.name
+        view.findViewById<TextView>(R.id.weathertemp).text = "${weatherData.main.temp.toInt()}°C"
+        val iconUrl = "https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png"
+        Glide.with(this).load(iconUrl).into(view.findViewById(R.id.imageView2))
+    }
+
+
 
     private fun dataInitialize() {
         dataList = arrayListOf<TeamDataClass>()

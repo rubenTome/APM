@@ -35,6 +35,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +53,21 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private var isFragmentOpen = false
+
+
+    data class WeatherData(
+        val name: String,
+        val main: Main,
+        val weather: List<Weather>
+    )
+
+    data class Main(
+        val temp: Double
+    )
+
+    data class Weather(
+        val icon: String
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,6 +150,8 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
 
     }
+
+
 
 
     private fun signOutAndStartSignInActivity() {
