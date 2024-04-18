@@ -100,6 +100,12 @@ En cuanto a corrutinas, para evitar bloquear el Thread principal su uso se va a 
 - Se buscará que las peticiones a la base de datos de Firebase, sean de escritura o lectura se ejecuten mediante corrutinas evitando sobrecargar el thread principal.
 - Cada vez que accedemos a la información de un evento queremos que entre su información se muestre el tiempo que hará ese día. Para ello hacemos uso de OpenWeatherMap. Esta es una API que combinando su uso con RetroFit nos permite hacer consultas directamente desde la APP. Como no queremos esperar a la respuesta de estas consultas para poder abrir la pantalla, estas peticiones GET se han aislado en una corrutina. Esto permite a la aplicación cargar el fragment correspondiente aunque el ImageView y TextViews con los datos no hayan recibido los datos. Así se puede ver que al acceder al Fragment del torneo 1 la información sobre el tiempo aparece unos segundos más tarde. Evitamos por lo tanto con esta petición asíncrona bloquear el main thread.
 
+## Geolocalización
+Para localización se ha empleado la API propuesta en clase de Google Maps Platform. Con ella en el fragment principal se han incluido ya un mapa funcional en el que se muestra nuestra ubicación en todo momento tras pedirle los permisos requeridos al usuario. Esta ubicación se actuliza mediante un request cada cierto intervalo de tiempo. En este mismo mapa se han configurado manualmente en este punto unos marcadores que son los que permiten acceder a los eventos. En cuanto estos eventos se guarden en una base de datos se espera poder acceder a ellos mediante llamads y no como ahora que son simples datos "inscrutados" en la aplicación. 
+Se ha intententando que este eventos solo aparezcan en pantalla si la distancia a ellos con respecto a la última localización es menor que 1 km pero por ahora no se ha logrado. 
+Queda implementar tambien un sistema de rutas gracias al botón como llegar, pero dado que no tenemos eventos guardados en bases de datos con sus ubicaciones se prefiere hacerlo cuando estas estén bien definidas.
+
+
 
 
 
