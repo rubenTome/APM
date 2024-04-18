@@ -2,7 +2,10 @@ package com.example.panchagapp.ui.home
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +22,20 @@ import androidx.navigation.fragment.findNavController
 import com.example.panchagapp.R
 import com.example.panchagapp.databinding.FragmentHomeBinding
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.Task
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -39,10 +49,28 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
     private lateinit var map:GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    updateLocationOnMap(location)
+                    Log.d("HOLA","NUEVA LOCA")
+                }
+            }
+        }
+
+
+}
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -51,7 +79,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val eventbutton = root.findViewById<Button>(R.id.eventbutton)
         val listbutton = root.findViewById<Button>(R.id.listbutton)
         createFragment()
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
 
 
         eventbutton.setOnClickListener {
@@ -76,6 +104,32 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.maps_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
+
+    private val locationRequest = LocationRequest.Builder(10000)
+        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).build()
+
+
+    private fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
+
+
+
+    private fun updateLocationOnMap(location: Location) {
+        val latLng = LatLng(location.latitude, location.longitude)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
@@ -142,6 +196,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         location?.let {
                             val currentLatLng = LatLng(it.latitude, it.longitude)
                             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                            startLocationUpdates()
                         }
                     }
 

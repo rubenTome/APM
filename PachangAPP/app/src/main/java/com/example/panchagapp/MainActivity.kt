@@ -32,6 +32,12 @@ import com.example.panchagapp.ui.signin.SignIn
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.SettingsClient
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -68,6 +74,7 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     data class Weather(
         val icon: String
     )
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

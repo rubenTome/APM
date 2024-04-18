@@ -29,11 +29,9 @@ class SignIn : AppCompatActivity() {
 
          auth = FirebaseAuth.getInstance()
 
-
          val loginbutton = findViewById<Button>(R.id.signInButton)
          loginbutton.setOnClickListener {
-             //signIn()
-             startActivity(Intent(this, MainActivity::class.java))
+             signIn()
          }
 
     }
