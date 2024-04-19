@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "766380429416",
+    "firebase_url": "https://pachangapp-7c24e-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "pachangapp-7c24e",
     "storage_bucket": "pachangapp-7c24e.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "766380429416-hvkrofd0o6f4ehqa5hrbbcrbigh69rrm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.panchagapp",
+            "certificate_hash": "b291f18b9bcf1e0b28a6fea75cf34f792c44204d"
+          }
+        },
         {
           "client_id": "766380429416-3bdb3beosfr0qdootc7ef787rm7if13m.apps.googleusercontent.com",
           "client_type": 3
