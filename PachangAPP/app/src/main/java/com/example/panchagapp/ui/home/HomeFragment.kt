@@ -1,6 +1,7 @@
 package com.example.panchagapp.ui.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -34,8 +35,17 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -50,6 +60,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map:GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
+    private lateinit var currentLocation: Location
+    private val markerList = mutableListOf<MarkerOptions>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +71,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations) {
+                    currentLocation = location
                     updateLocationOnMap(location)
-                    Log.d("HOLA","NUEVA LOCA")
+                    updateMarkersOnMap()
                 }
             }
         }
@@ -85,6 +98,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         eventbutton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_creareventos)
             Toast.makeText(activity, "Crear Evento", Toast.LENGTH_SHORT).show()
+
         }
         listbutton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_listaeventos)
@@ -105,10 +119,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    private val locationRequest = LocationRequest.Builder(10000)
+    private val locationRequest = LocationRequest.Builder(1000)
         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).build()
 
 
+
+
+
+    @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
@@ -122,6 +140,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private fun updateLocationOnMap(location: Location) {
         val latLng = LatLng(location.latitude, location.longitude)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+    }
+
+    private fun updateMarkersOnMap() {
+        map.clear() // Clear existing markers
+
+        for (marker in markerList) {
+            val markerLocation = Location("")
+            markerLocation.latitude = marker.position.latitude
+            markerLocation.longitude = marker.position.longitude
+
+            // Calculate distance between marker and current location
+            val distance = currentLocation.distanceTo(markerLocation)
+
+            // Show marker if within threshold distance (e.g., 1000 meters)
+            if (distance <= 1000) {
+                map.addMarker(marker)
+            }
+        }
     }
 
 
@@ -181,6 +217,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -208,31 +245,34 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun addMarker() {
-        val favoritePlace = LatLng(43.364195,-8.414)
+        val favoritePlace = LatLng(43.334195,-8.414)
         val favoritePlace2 = LatLng(43.364195,-8.402)
-        val evento1 = map.addMarker(MarkerOptions().position(favoritePlace).title("Evento 1"))
-        val evento2 = map.addMarker(MarkerOptions().position(favoritePlace2).title("Torneo 1"))
+        val evento1 =  MarkerOptions().position(favoritePlace2).title("Torneo 1")
+        val evento2 = MarkerOptions().position(favoritePlace).title("Evento 1")
+        val torneo = map.addMarker(evento1)
+        val evento = map.addMarker(evento2)
+        markerList.add(evento1)
+        markerList.add(evento2)
         map.setOnMarkerClickListener { clickedMarker ->
-            if (clickedMarker != null && clickedMarker == evento1) {
+            if (clickedMarker != null && clickedMarker == evento) {
                 val directions = HomeFragmentDirections.actionNavigationHomeToNavigationEvento2("Evento 1")
                 Toast.makeText(activity, "Datos Evento", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(directions)
                 true // Returning true consumes the event and indicates that it has been handled
-            } else {
-                false // Returning false indicates that the event has not been handled
-            }
-        }
-        map.setOnMarkerClickListener { clickedMarker ->
-            if (clickedMarker != null && clickedMarker == evento2) {
+            } else if (clickedMarker != null && clickedMarker == torneo) {
                 val directions = HomeFragmentDirections.actionNavigationHomeToNavigationTorneo("Torneo 1")
                 Toast.makeText(activity, "Datos Torneo", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(directions)
                 true // Returning true consumes the event and indicates that it has been handled
-            } else {
+            }  else  {
                 false // Returning false indicates that the event has not been handled
             }
         }
+
     }
+
+
+
 
 }
 

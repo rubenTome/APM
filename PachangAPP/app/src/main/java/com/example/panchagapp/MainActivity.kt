@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import com.bumptech.glide.Glide
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -40,7 +41,14 @@ import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -59,7 +67,6 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private var isFragmentOpen = false
-
 
     data class WeatherData(
         val name: String,
@@ -85,6 +92,9 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val email = intent.getStringExtra("UserEmail")
         val username = intent.getStringExtra("Username")
         val photo = intent.getStringExtra("Photo")
+
+
+
 
 
         mAuth = FirebaseAuth.getInstance()
@@ -153,10 +163,11 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             drawerlayout
         )
         setupActionBarWithNavController(navController,appBarConfiguration)
-
-
-
     }
+
+
+
+
 
 
 
