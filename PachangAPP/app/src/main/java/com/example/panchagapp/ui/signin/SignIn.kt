@@ -80,6 +80,7 @@ class SignIn : AppCompatActivity() {
                     val key = "namekey"
                     val user = auth.currentUser
                     SharedPreferencesHelper.saveString(application, key, user?.displayName!!)
+                    SharedPreferencesHelper.saveBoolean(application, "isLoggedIn", true)
                     val isNewUser = task.result?.additionalUserInfo?.isNewUser ?: false
                     if (isNewUser) {
                        agregarplayer(user?.displayName!!,"","",0,"",0)
