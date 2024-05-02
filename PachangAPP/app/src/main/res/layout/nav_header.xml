@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/greybk"
+    android:background="@color/primaryLightColor"
     android:padding="16dp">
 
     <!-- Profile Image -->
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="John Doe"
-            android:textColor="@android:color/black"
+            android:textColor="@color/primaryTextColor"
             android:textSize="18sp"/>
 
         <!-- Email -->
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="john.doe@example.com"
-            android:textColor="@android:color/black"
+            android:textColor="@color/primaryTextColor"
             android:textSize="14sp"/>
 
     </LinearLayout>

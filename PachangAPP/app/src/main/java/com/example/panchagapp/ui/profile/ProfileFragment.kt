@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.panchagapp.R
 import com.example.panchagapp.util.SharedPreferencesHelper
 import com.google.firebase.database.DataSnapshot
@@ -30,7 +31,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     val database = FirebaseDatabase.getInstance()
     val playersRef = database.getReference("players")
     val key = "namekey"
-    val retrievedValue = SharedPreferencesHelper.getString(requireContext(), key)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,18 +40,28 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             param2 = it.getString(ARG_PARAM2)
 
         }
-        getPlayerInfoByName(retrievedValue) { dataSnapshot ->
-            if (dataSnapshot != null) {
-                // Player found
-                for (playerSnapshot in dataSnapshot.children) {
-                    val value = playerSnapshot.getValue<String>()
-                }
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val retrievedValue = SharedPreferencesHelper.getString(requireContext(), key)
+        getPlayerInfoByName(retrievedValue) { playerData ->
+            if (playerData != null) {
+                // Player found, handle the data
+                // Assuming playerData is a HashMap<String, Any>
+                val playerName = playerData["name"] as? String
+                // Access other player attributes similarly
+
+                Toast.makeText(requireContext(),playerName,Toast.LENGTH_SHORT).show()
+                println("Player Name: $playerName")
             } else {
                 // Player not found
                 println("Player not found.")
             }
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,13 +72,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     // Function to retrieve player information by name
-    fun getPlayerInfoByName(playerName: String?, callback: (DataSnapshot?) -> Unit) {
+    fun getPlayerInfoByName(playerName: String?, callback: (HashMap<String, Any>?) -> Unit) {
         playersRef.orderByChild("name").equalTo(playerName)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        // Player found, pass the dataSnapshot to the callback function
-                        callback(dataSnapshot)
+                        // Player(s) found
+                        for (playerSnapshot in dataSnapshot.children) {
+                            val playerData = playerSnapshot.value as HashMap<String, Any>?
+                            callback(playerData)
+                            return // Exit loop after the first match if you only expect one player with the given name
+                        }
                     } else {
                         // Player not found
                         callback(null)
@@ -81,6 +96,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             })
     }
+
 
 
     companion object {

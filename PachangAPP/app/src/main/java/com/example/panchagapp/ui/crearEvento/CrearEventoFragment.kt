@@ -1,5 +1,7 @@
 package com.example.panchagapp.ui.crearEvento
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.panchagapp.R
@@ -24,6 +28,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,7 +46,13 @@ class CrearEventoFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     val database = FirebaseDatabase.getInstance()
-    val eventosRef = database.getReference("events")
+    private val eventosRef = database.getReference("events")
+    private val calendar = Calendar.getInstance()
+    private lateinit var  dateedit: EditText
+    private lateinit var  datehour: EditText
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,18 +80,23 @@ class CrearEventoFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
         val crearbutton = view.findViewById<Button>(R.id.crearevento)
+        val nombreventotv = view.findViewById<TextInputEditText>(R.id.nombreeventotv)
+        val nombreevento = nombreventotv.text.toString()
+        dateedit = view.findViewById<EditText>(R.id.editTextDate)
+        dateedit.setOnClickListener{ showDateDialog() }
+        datehour = view.findViewById<EditText>(R.id.editTextHour)
+        datehour.setOnClickListener{ showTimePicker() }
+        val date = dateedit.text.toString()
+        val spinneroption = spinner.selectedItem.toString()
+        val playered = view.findViewById<EditText>(R.id.editTextNumber)
+        val maxPlayers = playered.text.toString()
         crearbutton.setOnClickListener {
-            val nombreventotv = view.findViewById<TextInputEditText>(R.id.nombreeventotv)
-            val nombreevento = nombreventotv.text.toString()
-            val dateedit = view.findViewById<EditText>(R.id.editTextDate)
-            val date = dateedit.text.toString()
-            val spinneroption = spinner.selectedItem.toString()
-            val playered = view.findViewById<EditText>(R.id.editTextNumber)
-            val maxPlayers = playered.text.toString()
             agregarEvento(date,"HOLA","Aqui",maxPlayers.toInt(),nombreevento,"nadie",spinneroption)
             findNavController().navigate(R.id.action_navigation_creareventos_to_navigation_home)
         }
     }
+
+
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
@@ -90,6 +106,34 @@ class CrearEventoFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private  fun showDateDialog() {
+            val datePicker = DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                    // Set the selected date on the edit text
+                    dateedit.setText("$year-${monthOfYear + 1}-$dayOfMonth")
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            datePicker.show()
+        }
+
+    private fun showTimePicker() {
+        val timePicker = TimePickerDialog(
+            requireContext(),
+            TimePickerDialog.OnTimeSetListener { view: TimePicker, hourOfDay: Int, minute: Int ->
+                // Set the selected time on the edit text
+                datehour.setText("$hourOfDay:$minute")
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false // 24-hour format
+        )
+        timePicker.show()
     }
 
     // Método para agregar un nuevo elemento al array

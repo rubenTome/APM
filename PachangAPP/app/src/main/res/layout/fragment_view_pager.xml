@@ -10,10 +10,12 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:panelColorBackground"
+        android:background="@color/secondaryDarkColor"
         app:tabGravity="fill"
         app:tabInlineLabel="true"
-        app:tabMode="fixed">
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/primaryLightColor"
+        app:tabTextColor="@color/primaryTextColor">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

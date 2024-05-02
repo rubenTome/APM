@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.PanchagAPP" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/deepblue</item>
-        <item name="colorPrimaryVariant">@color/greyblue</item>
-        <item name="colorOnPrimary">@color/skin</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/secondaryTextColor</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/orange</item>
-        <item name="colorSecondaryVariant">@color/brown</item>
-        <item name="colorOnSecondary">@color/skin</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/primaryTextColor</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

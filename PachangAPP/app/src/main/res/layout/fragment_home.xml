@@ -27,8 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/baseline_add_24"
-        android:drawableTint="@color/white"
+        android:drawableTint="@color/primaryTextColor"
         android:text="Evento"
+        android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.902"
@@ -38,18 +39,19 @@
 
     <Button
         android:id="@+id/listbutton"
-        android:layout_width="417dp"
-        android:layout_height="65dp"
-        android:text="-"
-        android:textStyle="bold"
-        android:textSize="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/view_list_24dp_fill0_wght400_grad0_opsz24"
+        android:drawableRight="@drawable/expand_less_24dp_fill0_wght400_grad0_opsz24"
+        android:tint="@color/primaryTextColor"
+        android:gravity="center"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/maps_fragment"
         app:layout_constraintVertical_bias="1.0" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

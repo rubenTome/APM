@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="17dp"
         android:layout_marginBottom="100dp"
+        android:elevation="20dp"
         android:drawableLeft="@drawable/baseline_add_24"
         android:drawableTint="?backgroundColor"
         android:paddingHorizontal="30dp"

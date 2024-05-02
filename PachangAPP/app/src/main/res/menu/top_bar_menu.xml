@@ -1,12 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <item android:id="@+id/appbar_coins"
-        android:title="coins"
-        app:showAsAction="always"
-        android:icon="@drawable/coin_svgrepo_com"
-        android:iconTint="@color/orange"/>
+    
 
     <item android:id="@+id/appbar_profile"
         android:title="profile"

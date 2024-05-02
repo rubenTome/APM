@@ -130,12 +130,10 @@ class inscribirseTorneoFragment : Fragment()  {
             }
         })
 
-
-
     }
     private fun updateUI(view: View,weatherData: MainActivity.WeatherData) {
         view.findViewById<TextView>(R.id.weathername).text = weatherData.name
-        view.findViewById<TextView>(R.id.weathertemp).text = "${weatherData.main.temp.toInt()}°C"
+        view.findViewById<TextView>(R.id.weathertemp).text = "${weatherData.main.temp.toInt() - 273}°C"
         val iconUrl = "https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png"
         Glide.with(this).load(iconUrl).into(view.findViewById(R.id.imageView2))
     }

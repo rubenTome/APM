@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/greyskin">
+        android:background="@color/secondaryDarkColor">
 
         <!-- Team Name Column -->
         <TextView
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="Equipo"
-            android:textColor="@color/deepblue"
+            android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
             android:gravity="center"
             android:padding="8dp" />
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="J"
-            android:textColor="@color/deepblue"
+            android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
             android:gravity="center"
             android:padding="8dp" />
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="V"
-            android:textColor="@color/deepblue"
+            android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
             android:gravity="center"
             android:padding="8dp" />
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="E"
-            android:textColor="@color/deepblue"
+            android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
             android:gravity="center"
             android:padding="8dp" />
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="D"
-            android:textColor="@color/deepblue"
+            android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
             android:gravity="center"
             android:padding="8dp" />
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="DF"
-            android:textColor="@color/deepblue"
+            android:textColor="@color/primaryTextColor"
             android:textStyle="bold"
             android:gravity="center"
             android:padding="8dp" />

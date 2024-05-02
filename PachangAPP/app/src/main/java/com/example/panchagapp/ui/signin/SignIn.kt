@@ -37,9 +37,26 @@ class SignIn : AppCompatActivity() {
 
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sig_in)
 
          auth = FirebaseAuth.getInstance()
+
+         if (isLoggedIn(this)) {
+             // User is logged in, skip LoginActivity and proceed to main activity
+             startActivity(Intent(this, MainActivity::class.java).also {
+                 it.putExtra("UserEmail", auth.currentUser?.email)
+                 it.putExtra("Username", auth.currentUser?.displayName)
+                 it.putExtra("Photo", auth.currentUser?.photoUrl.toString())
+             })
+             finish()
+         } else {
+             // User is not logged in, proceed with LoginActivity
+             startActivity(Intent(this, SignIn::class.java))
+             finish()
+         }
+
+        setContentView(R.layout.activity_sig_in)
+
+
 
          val loginbutton = findViewById<Button>(R.id.signInButton)
          loginbutton.setOnClickListener {
@@ -80,13 +97,13 @@ class SignIn : AppCompatActivity() {
                     val key = "namekey"
                     val user = auth.currentUser
                     SharedPreferencesHelper.saveString(application, key, user?.displayName!!)
-                    SharedPreferencesHelper.saveBoolean(application, "isLoggedIn", true)
                     val isNewUser = task.result?.additionalUserInfo?.isNewUser ?: false
                     if (isNewUser) {
                        agregarplayer(user?.displayName!!,"","",0,"",0)
                     }
 
                     Toast.makeText(this, "Signed in as ${user?.displayName}", Toast.LENGTH_SHORT).show()
+                    saveLoginState(this, true)
                     startActivity(Intent(this, MainActivity::class.java).also {
                         it.putExtra("UserEmail", user?.email)
                         it.putExtra("Username", user?.displayName)
@@ -97,6 +114,19 @@ class SignIn : AppCompatActivity() {
                     Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    fun saveLoginState(context: Context, isLoggedIn: Boolean) {
+        val sharedPref = context.getSharedPreferences("login_state", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putBoolean("isLoggedIn", isLoggedIn)
+            apply()
+        }
+    }
+
+    fun isLoggedIn(context: Context): Boolean {
+        val sharedPref = context.getSharedPreferences("login_state", Context.MODE_PRIVATE)
+        return sharedPref.getBoolean("isLoggedIn", false)
     }
 
 
