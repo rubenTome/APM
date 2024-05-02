@@ -11,7 +11,9 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_navigation_listaeventos"
-            app:destination="@id/navigation_listaeventos" />
+            app:destination="@id/navigation_listaeventos"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"/>
         <action
             android:id="@+id/action_navigation_home_to_navigation_evento2"
             app:destination="@id/navigation_evento">
@@ -52,7 +54,9 @@
         tools:layout="@layout/fragment_lista_eventos">
         <action
             android:id="@+id/action_navigation_listaeventos_to_navigation_torneo"
-            app:destination="@id/navigation_torneo">
+            app:destination="@id/navigation_torneo"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left">
             <argument
                 android:name="EventName"
                 app:argType="string" />
@@ -60,7 +64,9 @@
         />
         <action
             android:id="@+id/action_navigation_listaeventos_to_navigation_evento"
-            app:destination="@id/navigation_evento">
+            app:destination="@id/navigation_evento"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left">
             <argument
                 android:name="EventName"
                 app:argType="string" />

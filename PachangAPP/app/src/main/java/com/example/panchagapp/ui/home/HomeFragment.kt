@@ -102,6 +102,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
         listbutton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_listaeventos)
+
             Toast.makeText(activity, "Lista de Eventos", Toast.LENGTH_SHORT).show()
         }
 

@@ -30,8 +30,7 @@
         android:elevation="20dp"
         android:drawableLeft="@drawable/baseline_add_24"
         android:drawableTint="?backgroundColor"
-        android:paddingHorizontal="30dp"
-        android:paddingVertical="20dp"
+
         android:text="Evento"
         android:textColor="?backgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
