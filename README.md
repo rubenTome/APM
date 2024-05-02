@@ -123,7 +123,15 @@ Para su uso se han planteado varias ideas:
 3. Se ha planteado la opción de guardar la información de si el usuario ya está loggeado, para así evitar que de cada vez se comprueba el auth con Firebase.
 
 
+## Usabilidad y UX
 
+A nivel de Usabilidad y UX se han detectado diversos fallos en cuento a la compresión de algunas funciones de la aplicación.
+1. En primer lugar, la paleta de colores generaba dudas a los usuarios. No en el sentido de ser más bonita o fea si no que las duas se daban en referencia a los colores de los botones por ejemplo. Al emplear siempre el mismo en todas las sitauciones resultaba complicado comprender cuales se consideraban acciones principales y cuales eran de menor importancia. Para arreglarlo se ha empleado Color Tool de Material con el cual se han obtenido una gama de color primarios y secundarios y entorno a ellos se ha modificado el esquema de la aplicación.
+2. Falta de claridad en iconos: En ciertos botonos como el acceder a la lista de eventos, resultaba complicado comprender su funcionalidad debido a las malas indicaciones que había. Para arreglarlo se ha buscado en han buscado en Matearial icono estándar que sirvan de mayor compresión al usuario.
+3. Para comprender mejor el flujo de la app se han creado animaciones que permitan al usuario comprender mejor el moviento sobre esta, por ejemplo animaciones de slide in hacen que el usuario comprenda mejor la relación entre los dos fragments entre los que se mueve.
+4. Como contamos con varios elementos de cards se ha reducido la informaciñon que se muestra en ellos a la mínima necesario. Tal como se explica en Material Guidelines, no se debe forzar la información en ellasm en ocasiones menos es más.
+
+   Se realizarán mayores pruebas en el futuro con terceros para ver más cambios.
 
 
 
