@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,6 +51,9 @@ class CrearEventoFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private lateinit var  dateedit: EditText
     private lateinit var  datehour: EditText
+    private lateinit var latitude: String
+    private lateinit var longitude: String
+
 
 
 
@@ -74,27 +78,51 @@ class CrearEventoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val args = CrearEventoFragmentArgs.fromBundle(requireArguments())
+        val latLng = args.coordenates
+        latitude = latLng.latitude.toString()
+        longitude = latLng.longitude.toString()
+        Toast.makeText(context,latitude + longitude, Toast.LENGTH_SHORT).show()
+
+        // Setup the spinner
         val spinner = view.findViewById<Spinner>(R.id.spinner)
         val items = arrayOf("Evento Casual", "Torneo")
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, items)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+
+        // Find the views
         val crearbutton = view.findViewById<Button>(R.id.crearevento)
         val nombreventotv = view.findViewById<TextInputEditText>(R.id.nombreeventotv)
-        val nombreevento = nombreventotv.text.toString()
         dateedit = view.findViewById<EditText>(R.id.editTextDate)
-        dateedit.setOnClickListener{ showDateDialog() }
         datehour = view.findViewById<EditText>(R.id.editTextHour)
-        datehour.setOnClickListener{ showTimePicker() }
-        val date = dateedit.text.toString()
-        val spinneroption = spinner.selectedItem.toString()
         val playered = view.findViewById<EditText>(R.id.editTextNumber)
-        val maxPlayers = playered.text.toString()
+
+        // Setup date and time pickers
+        dateedit.setOnClickListener { showDateDialog() }
+        datehour.setOnClickListener { showTimePicker() }
+
+        // Button click listener
         crearbutton.setOnClickListener {
-            agregarEvento(date,"HOLA","Aqui",maxPlayers.toInt(),nombreevento,"nadie",spinneroption)
-            findNavController().navigate(R.id.action_navigation_creareventos_to_navigation_home)
+            val nombreevento = nombreventotv.text.toString()
+            val date = dateedit.text.toString()
+            val hour = datehour.text.toString()
+            val spinneroption = spinner.selectedItem.toString()
+            val maxPlayers = playered.text.toString()
+
+            if (maxPlayers.isNotEmpty()) {
+                agregarEvento(date, hour, "HOLA", maxPlayers.toInt(), nombreevento, spinneroption)
+
+                // Navigate to another fragment
+                findNavController().navigate(R.id.action_navigation_creareventos_to_navigation_home)
+            } else {
+                // Handle the case when maxPlayers is empty or show a validation error
+                Toast.makeText(requireContext(), "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
 
     companion object {
@@ -137,41 +165,46 @@ class CrearEventoFragment : Fragment() {
     }
 
     // Método para agregar un nuevo elemento al array
-    private fun agregarEvento(datatime: String, descripcion: String, location: String, maxPlayers: Int, name: String, players: String, type: String) {
-        // Obtener referencia a la base de datos
-
-        // Obtener el valor actual del array de eventos
+    private fun agregarEvento(datatime: String, hour: String, descripcion: String, maxPlayers: Int, name: String, type: String) {
         eventosRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val eventosList: MutableList<Map<String, Any>> = dataSnapshot.getValue() as MutableList<Map<String, Any>>? ?: mutableListOf()
+                val eventosList: MutableList<Map<String, Any>> = mutableListOf()
 
-                // Crear el nuevo evento
+                // Iterate through the children of the snapshot to correctly build the list
+                for (snapshot in dataSnapshot.children) {
+                    val evento = snapshot.getValue(object : GenericTypeIndicator<Map<String, Any>>() {})
+                    if (evento != null) {
+                        eventosList.add(evento)
+                    }
+                }
+
                 val nuevoEvento = mapOf(
                     "datatime" to datatime,
+                    "hour" to hour,
                     "descripcion" to descripcion,
-                    "location" to location,
+                    "location" to mapOf(
+                        "lat" to latitude,
+                        "lon" to longitude
+
+                    ),
                     "maxPlayers" to maxPlayers,
                     "name" to name,
-                    "players" to players,
+                    "players" to emptyList<String>(),
                     "type" to type
                 )
 
-                // Agregar el nuevo evento a la lista de eventos
                 eventosList.add(nuevoEvento)
 
-                // Actualizar la lista de eventos en la base de datos
                 GlobalScope.launch {
                     try {
                         eventosRef.setValue(eventosList).await()
                         Toast.makeText(activity,"Nuevo evento agregado correctamente.",Toast.LENGTH_SHORT).show()
                     } catch (exception: Exception) {
-                        Toast.makeText(activity,"Error al agregar el nuevo evento: $exception",Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar cancelación de la operación
                 println("Operación cancelada: ${databaseError.message}")
             }
         })

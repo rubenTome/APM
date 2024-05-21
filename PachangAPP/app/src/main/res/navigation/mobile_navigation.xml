@@ -23,7 +23,8 @@
         </action>
         <action
             android:id="@+id/action_navigation_home_to_navigation_creareventos"
-            app:destination="@id/navigation_creareventos" />
+            app:destination="@id/navigation_creareventos">
+        </action>
         <action
             android:id="@+id/action_navigation_home_to_navigation_torneo"
             app:destination="@id/navigation_torneo">
@@ -31,16 +32,20 @@
                 android:name="EventName"
                 app:argType="string" />
         </action>
+
     </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.panchagapp.ui.dashboard_ranking.DashboardFragment"
-
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_profile"
-            app:destination="@id/navigation_profile" />
+            app:destination="@id/navigation_profile">
+            <argument
+                android:name="playername"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
@@ -113,12 +118,17 @@
         <action
             android:id="@+id/action_navigation_creareventos_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <argument android:name="coordenates"
+            app:argType="com.google.android.gms.maps.model.LatLng" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.panchagapp.ui.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="playername"
+            app:argType="string" />
     </fragment>
 
     <fragment

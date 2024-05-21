@@ -1,6 +1,7 @@
 package com.example.panchagapp.ui.dashboard_ranking
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.panchagapp.MobileNavigationDirections
 import com.example.panchagapp.R
 import com.example.panchagapp.databinding.FragmentDashboardBinding
+import com.example.panchagapp.ui.listaeventos.EventosAdapterClass
+import com.example.panchagapp.ui.listaeventos.EventosDataClass
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class DashboardFragment : Fragment() {
 
@@ -23,8 +32,15 @@ class DashboardFragment : Fragment() {
     private lateinit var adapter: RankingAdapterClass
     private lateinit var recyclerView: RecyclerView
     private lateinit var rankingArrayList: ArrayList<RankingDataClass>
-    lateinit var eventimageList: Array<Int>
-    lateinit var eventnameList: Array<String>
+    val database = Firebase.database
+    val myRef = database.getReference("players")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        rankingArrayList = arrayListOf()
+        adapter = RankingAdapterClass(rankingArrayList)
+        fetchPlayersFromDatabase()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +63,6 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataInitialize()
         val layoutManager = LinearLayoutManager(context)
         recyclerView = view.findViewById(R.id.rankingrv)
         recyclerView.layoutManager = layoutManager
@@ -55,49 +70,32 @@ class DashboardFragment : Fragment() {
         adapter = RankingAdapterClass(rankingArrayList)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener(object: RankingAdapterClass.onItemClickListener{
-            override fun onItemClick(position: Int) {
-                findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_profile)
-                Toast.makeText(activity, "Seleccionado Jugador", Toast.LENGTH_SHORT).show()
+            override fun onItemClick(position: Int, username: String) {
+                val action = DashboardFragmentDirections.actionNavigationDashboardToNavigationProfile(username)
+                findNavController().navigate(action)
+                Toast.makeText(activity, "Seleccionado Jugador: $username", Toast.LENGTH_SHORT).show()
 
             }
         })
     }
 
-    private fun dataInitialize() {
-        rankingArrayList = arrayListOf<RankingDataClass>()
-        eventimageList = arrayOf(
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-        )
+    private fun fetchPlayersFromDatabase() {
+        myRef.orderByChild("totalPoints").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                rankingArrayList.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val playername = snapshot.child("name").getValue(String::class.java)
+                    val playerimage = R.drawable.baseline_account_circle_24
+                    val player = RankingDataClass(playerimage, playername)
+                    rankingArrayList.add(player)
+                }
+                adapter.notifyDataSetChanged()
+            }
 
-        eventnameList = arrayOf(
-            "Jugador 1",
-            "Jugador 2",
-            "Jugador 3" ,
-            "Jugador 4",
-            "Jugador 5",
-            "Jugador 6",
-            "Jugador 7",
-            "Jugador 8",
-            "Jugador 9" ,
-            "Jugador 10",
-            "Jugador 11",
-            "Jugador 12",
-        )
-
-        for (i in eventimageList.indices) {
-            val dataClass = RankingDataClass(eventimageList[i], eventnameList[i])
-            rankingArrayList.add(dataClass)
-        }
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("TAG", "Failed to read value.", error.toException())
+            }
+        })
     }
+
 }

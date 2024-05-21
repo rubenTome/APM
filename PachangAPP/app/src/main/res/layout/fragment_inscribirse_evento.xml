@@ -101,7 +101,6 @@
         android:id="@+id/tveventdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="20 marzo"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
@@ -111,35 +110,48 @@
         app:layout_constraintTop_toTopOf="@+id/eventphoto"
         app:layout_constraintVertical_bias="0.873" />
 
+
     <TextView
-        android:background="#40001524"
         android:id="@+id/tveventhora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="11:00pm"
+        android:background="#40001524"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.256"
+        app:layout_constraintHorizontal_bias="0.287"
         app:layout_constraintStart_toStartOf="@+id/eventphoto"
         app:layout_constraintTop_toTopOf="@+id/eventphoto"
         app:layout_constraintVertical_bias="0.873" />
 
+    <TextView
+        android:id="@+id/maxplayers"
+        android:layout_width="50dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="60dp"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/eventphoto"
+        app:layout_constraintVertical_bias="0.066" />
 
     <TextView
         android:id="@+id/signInButton"
         android:layout_width="171dp"
         android:layout_height="38dp"
-        android:text="11/22 inscritos"
+        android:text="inscritos"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toEndOf="@+id/maxplayers"
         app:layout_constraintTop_toBottomOf="@+id/eventphoto"
         app:layout_constraintVertical_bias="0.066" />
 
@@ -186,6 +198,21 @@
         app:layout_constraintTop_toTopOf="@+id/eventphoto"
         app:layout_constraintVertical_bias="0.938" />
 
+    <TextView
+        android:id="@+id/currentplayers"
+        android:layout_width="30dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginBottom="48dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/maxplayers"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/eventphoto"
+        app:layout_constraintVertical_bias="0.473" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@ class RankingAdapterClass (private val dataList: ArrayList<RankingDataClass>):
 
     interface onItemClickListener {
 
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, username: String)
     }
 
     fun setOnItemClickListener(listener: onItemClickListener){
@@ -36,15 +36,20 @@ class RankingAdapterClass (private val dataList: ArrayList<RankingDataClass>):
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
         val currentItem = dataList[position]
         holder.rvimage.setImageResource(currentItem.playerImage)
-        holder.teamname.text = (currentItem.playerTitle)
+        holder.teamname.text = (currentItem.playerTitle!!)
+        holder.rank.text = "#" + ((position + 1 ).toString())
     }
 
     class ViewHolderClass(itemView: View,listener: onItemClickListener): RecyclerView.ViewHolder(itemView) {
         val rvimage:ImageView = itemView.findViewById(R.id.playerlogo)
         val teamname:TextView = itemView.findViewById(R.id.playername)
+        val rank:TextView = itemView.findViewById(R.id.rank)
         init {
             itemView.setOnClickListener{
-                listener.onItemClick(adapterPosition)
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(position, teamname.text.toString())
+                }
             }
         }
 

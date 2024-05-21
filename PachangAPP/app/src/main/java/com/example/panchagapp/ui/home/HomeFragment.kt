@@ -62,6 +62,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationCallback: LocationCallback
     private lateinit var currentLocation: Location
     private val markerList = mutableListOf<MarkerOptions>()
+    private var isMarkerPlaced = false
+    private lateinit var selectedMarkerLocation: LatLng
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,14 +92,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val eventbutton = root.findViewById<Button>(R.id.eventbutton)
+        eventbutton.isEnabled = isMarkerPlaced
         val listbutton = root.findViewById<Button>(R.id.listbutton)
         createFragment()
 
 
 
         eventbutton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_home_to_navigation_creareventos)
-            Toast.makeText(activity, "Crear Evento", Toast.LENGTH_SHORT).show()
+            if (isMarkerPlaced) {
+                val action = HomeFragmentDirections.actionNavigationHomeToNavigationCreareventos(selectedMarkerLocation)
+                findNavController().navigate(action)
+                Toast.makeText(activity, "Crear Evento", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(activity, "Debe colocar un marcador en el mapa primero", Toast.LENGTH_SHORT).show()
+            }
 
         }
         listbutton.setOnClickListener {
@@ -172,18 +180,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         map = googleMap
         enableMyLocation()
         addMarker()
-            /*map.setOnMapClickListener(object :GoogleMap.OnMapClickListener {
-            override fun onMapClick(latlng: LatLng) {
-                // Clears the previously touched position
-                map.clear();
-                // Animating to the touched position
-                map.animateCamera(CameraUpdateFactory.newLatLng(latlng));
+        map.setOnMapClickListener { latLng ->
+            // Clears the previously placed marker
+            map.clear()
 
-                val location = LatLng(latlng.latitude, latlng.longitude)
-                Toast.makeText(requireContext(), "Estás en ${location.latitude}, ${location.longitude}", Toast.LENGTH_SHORT).show()
-                map.addMarker(MarkerOptions().position(location))
-            }
-        })*/
+            // Animating to the touched position
+            map.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+
+            // Adding a marker on the touched position
+            val markerOptions = MarkerOptions().position(latLng)
+            map.addMarker(markerOptions)
+
+            // Update flag and save coordinates
+            isMarkerPlaced = true
+            selectedMarkerLocation = latLng
+
+            // Enable the event button
+            binding.eventbutton.isEnabled = true
+        }
     }
 
     private fun enableMyLocation() {

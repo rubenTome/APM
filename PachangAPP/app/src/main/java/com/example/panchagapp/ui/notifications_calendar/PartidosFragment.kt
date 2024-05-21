@@ -1,16 +1,24 @@
 package com.example.panchagapp.ui.notifications_calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
+import com.example.panchagapp.ui.listaeventos.EventosDataClass
 import com.example.panchagapp.ui.profile.HistorialAdapterClass
 import com.example.panchagapp.ui.profile.HistorialDataClass
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 /**
  * A simple [Fragment] subclass.
@@ -22,6 +30,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class PartidosFragment : Fragment() {
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -33,13 +42,17 @@ class PartidosFragment : Fragment() {
     lateinit var team2imagelist: Array<Int>
     lateinit var teamnamelist: Array<String>
     lateinit var resultList: Array<String>
+    private var eventName: String? = null
+    val database = Firebase.database
+    val myRef = database.getReference("tournamentMatches")
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        historialArrayList= arrayListOf()
+        adapter = HistorialAdapterClass(historialArrayList)
+        fetchEventsFromDatabase(eventName!!)
     }
 
     override fun onCreateView(
@@ -53,7 +66,6 @@ class PartidosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val eventbutton = view.findViewById<Button>(R.id.eventbutton)
-        dataInitialize()
         val layoutManager = LinearLayoutManager(context)
         recyclerView = view.findViewById(R.id.historialrv)
         recyclerView.layoutManager = layoutManager
@@ -62,16 +74,6 @@ class PartidosFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
-        companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PartidosFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 
 
     private fun dataInitialize() {
@@ -108,6 +110,27 @@ class PartidosFragment : Fragment() {
             )
             historialArrayList.add(dataClass)
         }
+    }
+
+    private fun fetchEventsFromDatabase(eventname: String) {
+        val tournamentRef = myRef.child(eventname)
+        tournamentRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                historialArrayList.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val score = snapshot.child("score").getValue(String::class.java)
+                    val team1 = snapshot.child("team1").getValue(String::class.java)
+                    val team2 = snapshot.child("team2").getValue(String::class.java)
+                    val event = HistorialDataClass(R.drawable.baseline_account_circle_24, team1!!, score!!, team2!!,  R.drawable.baseline_account_circle_24)
+                    historialArrayList.add(event)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("TAG", "Failed to read value.", error.toException())
+            }
+        })
     }
 
 

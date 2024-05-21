@@ -56,7 +56,6 @@
         android:id="@+id/tveventdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="20 marzo"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
@@ -66,21 +65,20 @@
         app:layout_constraintTop_toTopOf="@+id/eventphoto"
         app:layout_constraintVertical_bias="0.873" />
 
+
     <TextView
-        android:background="#40001524"
-        android:id="@+id/tveventhora"
+        android:id="@+id/tvtorneohora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="11:00pm"
+        android:background="#40001524"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.256"
+        app:layout_constraintHorizontal_bias="0.292"
         app:layout_constraintStart_toStartOf="@+id/eventphoto"
         app:layout_constraintTop_toTopOf="@+id/eventphoto"
         app:layout_constraintVertical_bias="0.873" />
-
 
     <RelativeLayout
         android:layout_width="93dp"

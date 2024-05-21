@@ -1,6 +1,7 @@
 package com.example.panchagapp.ui.notifications_calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,15 @@ import com.example.panchagapp.R
 import com.example.panchagapp.databinding.FragmentNotificationsBinding
 import com.example.panchagapp.ui.listaeventos.EventosAdapterClass
 import com.example.panchagapp.ui.listaeventos.EventosDataClass
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class NotificationsFragment : Fragment() {
 
@@ -27,8 +37,15 @@ class NotificationsFragment : Fragment() {
     private lateinit var adapter: EventosAdapterClass
     private lateinit var recyclerView: RecyclerView
     private lateinit var eventosArrayList: ArrayList<EventosDataClass>
-    lateinit var eventimageList: Array<Int>
-    lateinit var eventnameList: Array<String>
+    val database = Firebase.database
+    val myRef = database.getReference("events")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        eventosArrayList = arrayListOf()
+        adapter = EventosAdapterClass(eventosArrayList)
+        fetchEventsFromDatabase()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +62,6 @@ class NotificationsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layoutManager = LinearLayoutManager(context)
-        dataInitialize()
         recyclerView = view.findViewById(R.id.eventrv)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
@@ -61,32 +77,49 @@ class NotificationsFragment : Fragment() {
         })
     }
 
+    private fun fetchEventsFromDatabase() {
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                eventosArrayList.clear()
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val calendar = Calendar.getInstance()
 
-    private fun dataInitialize() {
-        eventosArrayList = arrayListOf<EventosDataClass>()
-        eventimageList = arrayOf(
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-        )
+                for (snapshot in dataSnapshot.children) {
+                    val datetimeString = snapshot.child("datetime").getValue(String::class.java)
 
-        eventnameList = arrayOf(
-            "Evento 1",
-            "Evento 2",
-            "Torneo 1",
-            "Evento 3",
-            "Evento 4",
-            "Torneo 2",
-        )
+                    if (datetimeString != null) {
+                        val datetime = dateFormat.parse(datetimeString)
+                        if (datetime != null && isWithinLast7Days(datetime)) {
+                            val eventName = snapshot.child("name").getValue(String::class.java)
+                            val eventImagename = snapshot.child("type").getValue(String::class.java)
+                            val eventImage = when (eventImagename) {
+                                "tournament" -> R.drawable.trophy_svgrepo_com
+                                "match" -> R.drawable.football_game
+                                else -> R.drawable.football_game // Default image if type doesn't match
+                            }
+                            val event = EventosDataClass(eventImage, eventName)
+                            eventosArrayList.add(event)
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
 
-        for (i in eventimageList.indices) {
-            val dataClass = EventosDataClass(eventimageList[i], eventnameList[i])
-            eventosArrayList.add(dataClass)
-        }
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("TAG", "Failed to read value.", error.toException())
+            }
+        })
     }
+
+    private fun isWithinLast7Days(datetime: Date): Boolean {
+        val calendar = Calendar.getInstance()
+        calendar.time = datetime
+        calendar.add(Calendar.DAY_OF_YEAR, 7) // Add 7 days to the given datetime
+
+        val now = Calendar.getInstance()
+        return calendar.after(now) // Check if the calculated datetime is after the current datetime
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

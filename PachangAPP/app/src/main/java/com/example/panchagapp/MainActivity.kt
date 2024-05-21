@@ -141,6 +141,11 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             val Intent = Intent(this,SignIn::class.java)
             Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
             signOutAndStartSignInActivity()
+            val sharedPref = this.getSharedPreferences("login_state", Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putBoolean("isLoggedIn", false)
+                    apply()
+                }
             startActivity(Intent)
 
         }

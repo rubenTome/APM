@@ -48,10 +48,6 @@ class SignIn : AppCompatActivity() {
                  it.putExtra("Photo", auth.currentUser?.photoUrl.toString())
              })
              finish()
-         } else {
-             // User is not logged in, proceed with LoginActivity
-             startActivity(Intent(this, SignIn::class.java))
-             finish()
          }
 
         setContentView(R.layout.activity_sig_in)
@@ -129,9 +125,17 @@ class SignIn : AppCompatActivity() {
         return sharedPref.getBoolean("isLoggedIn", false)
     }
 
+    data class PlayerStats(
+        val playedGames: Int,
+        // Add more statistics fields as needed
+    )
+
+
 
 
     private fun agregarplayer(nombre: String, nickname: String, position: String, stats: Int, team: String, totalpoints: Int) {
+
+       // List stats
         // Obtener referencia a la base de datos
 
         // Obtener el valor actual del array de eventos

@@ -35,7 +35,7 @@ class EventosAdapterClass (private val dataList: ArrayList<EventosDataClass>):
 
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
         val currentItem = dataList[position]
-        holder.rvimage.setImageResource(currentItem.eventImage)
+        holder.rvimage.setImageResource(currentItem.eventImage!!)
         holder.teamname.text = currentItem.eventTitle
     }
 
