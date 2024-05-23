@@ -193,15 +193,36 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val Intent = Intent(this,SignIn::class.java)
-        when(item.itemId) {
-            R.id.sidenav_home -> supportFragmentManager.beginTransaction().replace(R.id.fragmentlayout, HomeFragment()).commit()
-            R.id.sidenav_settings -> supportFragmentManager.beginTransaction().replace(R.id.drawer_layout, SettingsFragment()).commit()
-            R.id.sidenav_share -> Toast.makeText(this, "Compartir", Toast.LENGTH_SHORT).show()
-            R.id.sidenav_about -> Toast.makeText(this, "Sobre el proyecto", Toast.LENGTH_SHORT).show()
+        when (item.itemId) {
+            R.id.sidenav_home -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentlayout, HomeFragment())
+                    .commit()
+            }
+            R.id.sidenav_settings -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentlayout, SettingsFragment())
+                    .commit()
+            }
+            R.id.sidenav_share -> {
+               shareApp()
+            }
+            R.id.sidenav_about -> {
+                val url = "https://github.com/rubenTome/APM"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            }
         }
         drawerlayout.closeDrawer(GravityCompat.START)
         return true
+    }
+    private fun shareApp() {
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Prueba esta aplicación para crear pachangas!!!: PachangAPP")
+            type = "text/plain"
+        }
+        startActivity(Intent.createChooser(shareIntent, "Compartir por:"))
     }
 
     override fun onBackPressed() {

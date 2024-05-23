@@ -3,6 +3,7 @@ package com.example.panchagapp.ui.signin
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -35,7 +37,8 @@ class SignIn : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance()
     val playersRef = database.getReference("players")
 
-     override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
          auth = FirebaseAuth.getInstance()
@@ -95,7 +98,8 @@ class SignIn : AppCompatActivity() {
                     SharedPreferencesHelper.saveString(application, key, user?.displayName!!)
                     val isNewUser = task.result?.additionalUserInfo?.isNewUser ?: false
                     if (isNewUser) {
-                       agregarplayer(user?.displayName!!,"","",0,"",0)
+
+                       agregarplayer(user?.displayName!!,"","",0,"",0,user?.photoUrl.toString())
                     }
 
                     Toast.makeText(this, "Signed in as ${user?.displayName}", Toast.LENGTH_SHORT).show()
@@ -133,7 +137,9 @@ class SignIn : AppCompatActivity() {
 
 
 
-    private fun agregarplayer(nombre: String, nickname: String, position: String, stats: Int, team: String, totalpoints: Int) {
+
+
+    private fun agregarplayer(nombre: String, nickname: String, position: String, stats: Int, team: String, totalpoints: Int, profilePic: String) {
 
        // List stats
         // Obtener referencia a la base de datos
@@ -150,7 +156,8 @@ class SignIn : AppCompatActivity() {
                     "playablePos" to position,
                     "stats" to stats,
                     "team" to team,
-                    "totalPoints" to totalpoints
+                    "totalPoints" to totalpoints,
+                    "profilePic" to profilePic
                 )
 
                 // Agregar el nuevo evento a la lista de eventos

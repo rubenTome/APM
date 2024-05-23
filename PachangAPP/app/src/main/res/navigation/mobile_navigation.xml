@@ -13,7 +13,11 @@
             android:id="@+id/action_navigation_home_to_navigation_listaeventos"
             app:destination="@id/navigation_listaeventos"
             app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_bottom"/>
+            app:exitAnim="@anim/slide_out_bottom">
+        <argument
+            android:name="Location"
+            app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_navigation_home_to_navigation_evento2"
             app:destination="@id/navigation_evento">

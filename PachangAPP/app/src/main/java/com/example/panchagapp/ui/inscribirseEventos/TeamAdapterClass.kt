@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
 
-class TeamAdapterClass (private val dataList: ArrayList<TeamDataClass>):
+class TeamAdapterClass(private val dataList: ArrayList<TeamDataClass>):
     RecyclerView.Adapter<TeamAdapterClass.ViewHolderClass>() {
 
     private lateinit var mlistener : onItemClickListener
@@ -23,6 +23,10 @@ class TeamAdapterClass (private val dataList: ArrayList<TeamDataClass>):
         mlistener = listener
     }
 
+    fun addItem(item: String) {
+        dataList.add(TeamDataClass(R.drawable.baseline_account_circle_24,item,"0"))
+        notifyItemInserted(dataList.size - 1) // Notify RecyclerView about the new item
+    }
 
 
 

@@ -81,20 +81,20 @@ class NotificationsFragment : Fragment() {
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 eventosArrayList.clear()
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val dateFormat = SimpleDateFormat("dd-MM-YYYY", Locale.getDefault())
                 val calendar = Calendar.getInstance()
 
                 for (snapshot in dataSnapshot.children) {
-                    val datetimeString = snapshot.child("datetime").getValue(String::class.java)
+                    val datetimeString = snapshot.child("datatime").getValue(String::class.java)
 
                     if (datetimeString != null) {
                         val datetime = dateFormat.parse(datetimeString)
-                        if (datetime != null && isWithinLast7Days(datetime)) {
+                        if (datetime != null && isWithinNext7Days(datetime)) {
                             val eventName = snapshot.child("name").getValue(String::class.java)
                             val eventImagename = snapshot.child("type").getValue(String::class.java)
                             val eventImage = when (eventImagename) {
-                                "tournament" -> R.drawable.trophy_svgrepo_com
-                                "match" -> R.drawable.football_game
+                                "Torneo" -> R.drawable.trophy_svgrepo_com
+                                "Evento Casual" -> R.drawable.football_game
                                 else -> R.drawable.football_game // Default image if type doesn't match
                             }
                             val event = EventosDataClass(eventImage, eventName)
@@ -111,13 +111,12 @@ class NotificationsFragment : Fragment() {
         })
     }
 
-    private fun isWithinLast7Days(datetime: Date): Boolean {
+    private fun isWithinNext7Days(datetime: Date): Boolean {
         val calendar = Calendar.getInstance()
-        calendar.time = datetime
-        calendar.add(Calendar.DAY_OF_YEAR, 7) // Add 7 days to the given datetime
+        val next7Days = Calendar.getInstance()
+        next7Days.add(Calendar.DAY_OF_YEAR, 7) // Get the date for 7 days from now
 
-        val now = Calendar.getInstance()
-        return calendar.after(now) // Check if the calculated datetime is after the current datetime
+        return calendar.before(next7Days)
     }
 
     override fun onDestroyView() {

@@ -1,5 +1,6 @@
 package com.example.panchagapp.ui.listaeventos
 
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -34,6 +35,7 @@ class ListaEventosFragment : Fragment(){
     private lateinit var recyclerView: RecyclerView
     private lateinit var eventosArrayList: ArrayList<EventosDataClass>
     private lateinit var eventosAdapter: EventosAdapterClass
+    private var locationString: String? = null
     val database = Firebase.database
     val myRef = database.getReference("events")
 
@@ -42,6 +44,7 @@ class ListaEventosFragment : Fragment(){
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+            locationString = it.getString("locationString")
         }
         eventosArrayList = arrayListOf()
         eventosAdapter = EventosAdapterClass(eventosArrayList)
@@ -97,8 +100,43 @@ class ListaEventosFragment : Fragment(){
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 eventosArrayList.clear()
+
                 for (snapshot in dataSnapshot.children) {
                     val eventName = snapshot.child("name").getValue(String::class.java)
+                    val eventLatitudeStr = snapshot.child("location").child("lat").getValue(String::class.java)
+                    val eventLongitudeStr = snapshot.child("location").child("lon").getValue(String::class.java)
+                    val eventLatitude = eventLatitudeStr?.toDoubleOrNull()
+                    val eventLongitude = eventLongitudeStr?.toDoubleOrNull()
+
+                    if (locationString != null && eventLatitude != null && eventLongitude != null) {
+                        val eventLocation = Location("event")
+                        eventLocation.latitude = eventLatitude
+                        eventLocation.longitude = eventLongitude
+                        val userLocation = locationString!!.split(",")
+                        val userLat = userLocation?.getOrNull(0)?.toDoubleOrNull() ?: 0.0
+                        val userLng = userLocation?.getOrNull(1)?.toDoubleOrNull() ?: 0.0
+                        val userLocationObj = Location("user")
+                        userLocationObj.latitude = userLat
+                        userLocationObj.longitude = userLng
+
+                        val distance = userLocationObj.distanceTo(eventLocation)
+
+
+                        // Define a distance threshold (e.g., 1000 meters)
+                        val distanceThreshold = 5000 // Adjust as needed
+
+                        // If the distance is within the threshold, add the event to the list
+                        if (distance <= distanceThreshold) {
+                            val eventImagename = snapshot.child("type").getValue(String::class.java)
+                            val eventImage = when (eventImagename) {
+                                "Torneo" -> R.drawable.trophy_svgrepo_com
+                                "Evento Casual" -> R.drawable.football_game
+                                else -> R.drawable.football_game // Default image if type doesn't match
+                            }
+                            val event = EventosDataClass(eventImage, eventName)
+                            eventosArrayList.add(event)
+                        }
+                    }
                     val eventImagename = snapshot.child("type").getValue(String::class.java)
                     val eventImage = when (eventImagename) {
                         "Torneo" -> R.drawable.trophy_svgrepo_com
@@ -116,6 +154,7 @@ class ListaEventosFragment : Fragment(){
             }
         })
     }
+
 
 
 }

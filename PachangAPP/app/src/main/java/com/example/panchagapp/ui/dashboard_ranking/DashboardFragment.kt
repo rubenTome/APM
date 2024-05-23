@@ -85,8 +85,8 @@ class DashboardFragment : Fragment() {
                 rankingArrayList.clear()
                 for (snapshot in dataSnapshot.children) {
                     val playername = snapshot.child("name").getValue(String::class.java)
-                    val playerimage = R.drawable.baseline_account_circle_24
-                    val player = RankingDataClass(playerimage, playername)
+                    val profilePicUrl = snapshot.child("profilePic").getValue(String::class.java)
+                    val player = RankingDataClass(profilePicUrl, playername)
                     rankingArrayList.add(player)
                 }
                 adapter.notifyDataSetChanged()
