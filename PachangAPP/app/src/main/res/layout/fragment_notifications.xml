@@ -14,7 +14,7 @@
         android:layout_height="32dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="Torneos próximos 7 días"
+        android:text="Torneos en activo"
         android:textColor="?colorPrimary"
         android:textSize="24sp"
         android:textStyle="bold"

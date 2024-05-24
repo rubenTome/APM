@@ -9,4 +9,12 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="directions_array">
+        <item>En Coche</item>
+        <item>Andando</item>
+        <item>En Bici</item>
+        <item>Transporte público</item>
+    </string-array>
+
 </resources>

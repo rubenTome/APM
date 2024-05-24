@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
-import com.example.panchagapp.ui.inscribirseEventos.TeamAdapterClass
 
 class ClasificacionAdapterClass (private val dataList: ArrayList<ClasificacionDataClass>):
     RecyclerView.Adapter<ClasificacionAdapterClass.ViewHolderClass>() {

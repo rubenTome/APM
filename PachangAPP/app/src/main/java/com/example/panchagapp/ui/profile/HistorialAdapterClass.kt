@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
-import com.example.panchagapp.ui.inscribirseEventos.TeamAdapterClass
 
 class HistorialAdapterClass (private val dataList: ArrayList<HistorialDataClass>):
     RecyclerView.Adapter<HistorialAdapterClass.ViewHolderClass>() {

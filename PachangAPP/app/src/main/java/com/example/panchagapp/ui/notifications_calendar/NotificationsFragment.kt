@@ -71,7 +71,7 @@ class NotificationsFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 val selectedItem = eventosArrayList[position]
                 Toast.makeText(activity, "Seleccionado "+ selectedItem.eventTitle.toString(), Toast.LENGTH_SHORT).show()
-                val action = MobileNavigationDirections.actionGlobalViewPagerFragment("CALENDAR")
+                val action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationHistorialequipo()
                 findNavController().navigate(action)
             }
         })
@@ -89,7 +89,7 @@ class NotificationsFragment : Fragment() {
 
                     if (datetimeString != null) {
                         val datetime = dateFormat.parse(datetimeString)
-                        if (datetime != null && isWithinNext7Days(datetime)) {
+                        if (datetime != null && isWithinLast7Days(datetime)) {
                             val eventName = snapshot.child("name").getValue(String::class.java)
                             val eventImagename = snapshot.child("type").getValue(String::class.java)
                             val eventImage = when (eventImagename) {
@@ -111,13 +111,14 @@ class NotificationsFragment : Fragment() {
         })
     }
 
-    private fun isWithinNext7Days(datetime: Date): Boolean {
+    fun isWithinLast7Days(date: Date): Boolean {
         val calendar = Calendar.getInstance()
-        val next7Days = Calendar.getInstance()
-        next7Days.add(Calendar.DAY_OF_YEAR, 7) // Get the date for 7 days from now
-
-        return calendar.before(next7Days)
+        calendar.time = date
+        val past7Days = Calendar.getInstance()
+        past7Days.add(Calendar.DAY_OF_YEAR, -7)
+        return !calendar.before(past7Days) && calendar.before(Calendar.getInstance())
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

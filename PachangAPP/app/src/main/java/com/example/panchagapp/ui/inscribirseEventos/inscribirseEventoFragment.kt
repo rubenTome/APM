@@ -31,6 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private lateinit var lat : String
+private lateinit var lon: String
 
 /**
  * A simple [Fragment] subclass.
@@ -79,8 +81,8 @@ class inscribirseEventoFragment : Fragment() {
             var descriptiontv = view.findViewById<TextView>(R.id.textView3)
             var hourtv = view.findViewById<TextView>(R.id.tveventhora)
             val bundle = arguments
-            var lat = ""
-            var lon = ""
+            lat = ""
+            lon = ""
             if (bundle == null) {
                 Log.d("Confirmation", "FragmentEvento sin arguments")
                 return
@@ -98,7 +100,8 @@ class inscribirseEventoFragment : Fragment() {
                         val description = eventData.get("description") as? String
                         val maxplayers = eventData.get("maxPlayers") as? Long
                         val location = eventData.get("location") as? Map<String, Any>
-
+                        val players = eventData.get("players") as? List<*>
+                        val playerCount = players?.size ?: 0
                          lat = location?.get("lat") as String
                          lon = location?.get("lon") as String
                         GlobalScope.launch(Dispatchers.IO) {
@@ -110,6 +113,7 @@ class inscribirseEventoFragment : Fragment() {
                                 tveventdate.text = date
                                 maxplayerstv.text = maxplayers.toString()
                                 descriptiontv.text = description
+                                currentplayerstv.text = playerCount.toString()
                             }
 
                         } catch (e: Exception) {
@@ -157,7 +161,6 @@ class inscribirseEventoFragment : Fragment() {
                                 // Check if the player is already in the event's player list
                                 val playerAlreadyInList = dataSnapshot.child(eventId).child("players").children.any { it.getValue(String::class.java) == currentUserUid }
                                 if (!playerAlreadyInList) {
-                                    // Add the current user's UID to the event's player list
                                     eventRef.child("players").push().setValue(currentUserUid)
                                         .addOnCompleteListener { task ->
                                             if (task.isSuccessful) {
@@ -190,7 +193,8 @@ class inscribirseEventoFragment : Fragment() {
 
 
             trackbutton.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_evento_to_navigation_direction)
+                val action = inscribirseEventoFragmentDirections.actionNavigationEventoToTrackFragment(lat, lon)
+                findNavController().navigate(action)
                 Toast.makeText(activity, "Como llegar a localizacion!", Toast.LENGTH_SHORT).show()
             }
 

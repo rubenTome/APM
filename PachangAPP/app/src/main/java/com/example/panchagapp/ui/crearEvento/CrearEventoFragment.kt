@@ -1,5 +1,7 @@
 package com.example.panchagapp.ui.crearEvento
 
+import TeamAdapterClass
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -20,7 +22,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
-import com.example.panchagapp.ui.inscribirseEventos.TeamAdapterClass
 import com.example.panchagapp.ui.inscribirseEventos.TeamDataClass
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
@@ -57,17 +58,14 @@ class CrearEventoFragment : Fragment() {
     val database = FirebaseDatabase.getInstance()
     private lateinit var recyclerView: RecyclerView
     private val eventosRef = database.getReference("events")
+    private val teamsRef = database.getReference("teams")
     private val calendar = Calendar.getInstance()
-    private lateinit var  dateedit: EditText
-    private lateinit var  datehour: EditText
+    private lateinit var dateedit: EditText
+    private lateinit var datehour: EditText
     private lateinit var latitude: String
     private lateinit var longitude: String
     private lateinit var adapterrv: TeamAdapterClass
     private lateinit var mlistener: TeamAdapterClass.onItemClickListener
-
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,9 +95,9 @@ class CrearEventoFragment : Fragment() {
 
         mlistener = object : TeamAdapterClass.onItemClickListener {
             override fun onItemClick(position: Int) {
-                // Handle item click here
             }
         }
+
 
         // Setup the spinner
         val spinner = view.findViewById<Spinner>(R.id.spinner)
@@ -128,7 +126,12 @@ class CrearEventoFragment : Fragment() {
         datehour.setOnClickListener { showTimePicker() }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
                 // Update the TextView based on the selected item
                 when (selectedItem) {
@@ -139,6 +142,7 @@ class CrearEventoFragment : Fragment() {
                         addTeamButton.visibility = View.VISIBLE
 
                     }
+
                     "Evento Casual" -> {
                         capacidactv.text = "Capacidad Maxima"
                         equipostv.visibility = View.GONE
@@ -156,16 +160,18 @@ class CrearEventoFragment : Fragment() {
             }
         }
         var dataList = ArrayList<TeamDataClass>()
-        adapterrv = TeamAdapterClass(dataList)
+        adapterrv = TeamAdapterClass(dataList, R.layout.layout_team_list_item_crear)
+        // Set the item click listener for the adapter
+        adapterrv.setOnItemClickListener(object : TeamAdapterClass.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                // Handle item click here
+            }
+        })
+
+
 
         addTeamButton.setOnClickListener {
-            // Check if the adapter is initialized
-            if (::adapterrv.isInitialized) {
-                adapterrv.addItem("Equipo1") // Add a new item to the RecyclerView
-            } else {
-                // Adapter is not initialized
-                Toast.makeText(requireContext(), "RecyclerView Adapter is not initialized.", Toast.LENGTH_SHORT).show()
-            }
+            showNameInputDialog()
         }
 
         recyclerView = view.findViewById(R.id.recyclerViewTeams)
@@ -173,8 +179,12 @@ class CrearEventoFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapterrv
 
+        adapterrv.setOnItemClickListener(object : TeamAdapterClass.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                adapterrv.removeItem(position)
+            }
+        })
 
-        // Button click listener
         crearbutton.setOnClickListener {
             val nombreevento = nombreventotv.text.toString()
             val date = dateedit.text.toString()
@@ -183,10 +193,15 @@ class CrearEventoFragment : Fragment() {
             val maxPlayers = playered.text.toString()
 
             if (nombreevento.isNotEmpty() && date.isNotEmpty() && hour.isNotEmpty() && maxPlayers.isNotEmpty()) {
-                agregarEvento(date, hour, "HOLA", maxPlayers.toInt(), nombreevento, spinneroption)
+                val teams = adapterrv.dataList.map { it.teamTitle }
+                agregarEvento(date, hour, "HOLA", maxPlayers.toInt(), nombreevento, spinneroption, teams )
             } else {
                 // Handle the case when maxPlayers is empty or show a validation error
-                Toast.makeText(requireContext(), "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Por favor rellene todos los campos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -201,6 +216,39 @@ class CrearEventoFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun showNameInputDialog() {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val inflater = requireActivity().layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_input_name, null)
+        val editTextName = dialogView.findViewById<EditText>(R.id.editTextName)
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.setTitle("Introduzca el nombre")
+        dialogBuilder.setPositiveButton("Añadir") { dialog, which ->
+            val enteredName = editTextName.text.toString().trim()
+            if (enteredName.isNotEmpty()) {
+                if (!isNameAlreadyAdded(enteredName)) {
+                    adapterrv.addItem(enteredName)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Please enter a name", Toast.LENGTH_SHORT).show()
+            }
+        }
+        dialogBuilder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog = dialogBuilder.create()
+        dialog.show()
+    }
+
+    private fun isNameAlreadyAdded(name: String): Boolean {
+        for (item in adapterrv.dataList) {
+            if (item.teamTitle == name) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun showDateDialog() {
@@ -244,44 +292,88 @@ class CrearEventoFragment : Fragment() {
     }
 
     // Método para agregar un nuevo elemento al array
-    private fun agregarEvento(datatime: String, hour: String, descripcion: String, maxPlayers: Int, name: String, type: String) {
+    private fun agregarEvento(
+        datatime: String,
+        hour: String,
+        descripcion: String,
+        maxPlayers: Int,
+        name: String,
+        type: String,
+        teams: List<String>
+    ) {
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
         userId?.let { uid ->
-            eventosRef.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Toast.makeText(activity, "El evento ya existe.", Toast.LENGTH_SHORT).show()
-                    } else {
-                        eventosRef.push().setValue(mapOf(
-                            "datatime" to datatime,
-                            "hour" to hour,
-                            "descripcion" to descripcion,
-                            "location" to mapOf(
-                                "lat" to latitude,
-                                "lon" to longitude
-                            ),
-                            "maxPlayers" to maxPlayers,
-                            "name" to name,
-                            "players" to listOf(uid), // Add the user's Firebase Authentication UID
-                            "type" to type
-                        )).addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(activity, "Nuevo evento agregado correctamente.", Toast.LENGTH_SHORT).show()
-                                findNavController().navigate(R.id.action_navigation_creareventos_to_navigation_home)
+            eventosRef.orderByChild("name").equalTo(name)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Toast.makeText(activity, "El evento ya existe.", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            var totalsize = 0
+                            if (teams.size != 0) {
+                                totalsize = teams.size * maxPlayers
                             } else {
-                                Toast.makeText(activity, "Error al agregar el evento.", Toast.LENGTH_SHORT).show()
+                                totalsize = maxPlayers
+                            }
+
+                            eventosRef.push().setValue(
+                                mapOf(
+                                    "datatime" to datatime,
+                                    "hour" to hour,
+                                    "descripcion" to descripcion,
+                                    "location" to mapOf(
+                                        "lat" to latitude,
+                                        "lon" to longitude
+                                    ),
+                                    "maxPlayers" to totalsize,
+                                    "name" to name,
+                                    "players" to emptyList<String>(),
+                                    "type" to type,
+                                    "teams" to teams
+                                )
+                            ).addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    addTeamsToTeamsNode(teams,name,maxPlayers, listOf(uid) )
+                                    Toast.makeText(
+                                        activity,
+                                        "Nuevo evento agregado correctamente.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    findNavController().navigate(R.id.action_navigation_creareventos_to_navigation_home)
+                                } else {
+                                    Toast.makeText(
+                                        activity,
+                                        "Error al agregar el evento.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                         }
                     }
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    println("Operación cancelada: ${databaseError.message}")
-                }
-            })
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        println("Operación cancelada: ${databaseError.message}")
+                    }
+                })
         }
     }
+
+    private fun addTeamsToTeamsNode(teams: List<String>, eventName: String, maxPlayers: Int, players: List<String>) {
+        teams.forEach { teamName ->
+            val teamRef = teamsRef.child(eventName).child(teamName)
+            val teamData = mapOf(
+                "name" to teamName,
+                "maxPlayers" to maxPlayers,
+                "participants" to players
+            )
+            teamRef.setValue(teamData)
+        }
+    }
+
+
+
 
 
 }
