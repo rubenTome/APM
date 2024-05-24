@@ -89,7 +89,7 @@ class NotificationsFragment : Fragment() {
 
                     if (datetimeString != null) {
                         val datetime = dateFormat.parse(datetimeString)
-                        if (datetime != null && isWithinLast7Days(datetime)) {
+                        if (datetime != null) {
                             val eventName = snapshot.child("name").getValue(String::class.java)
                             val eventImagename = snapshot.child("type").getValue(String::class.java)
                             val eventImage = when (eventImagename) {

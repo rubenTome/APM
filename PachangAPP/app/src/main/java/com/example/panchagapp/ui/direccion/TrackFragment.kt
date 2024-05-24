@@ -4,15 +4,16 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.example.panchagapp.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -38,8 +39,9 @@ class TrackFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    private lateinit var textview : TextView
+    private lateinit var textview: TextView
     private val args: TrackFragmentArgs by navArgs()
+    private var call: Call? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +60,20 @@ class TrackFragment : Fragment(), OnMapReadyCallback {
 
         // Initialize the FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        textview = view.findViewById<Button>(R.id.distanceTextView)
+        textview = view.findViewById(R.id.distanceTextView)
+
+        // Create a callback for back press
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Cancel the ongoing request if any
+                call?.cancel()
+                // Navigate back
+                findNavController().popBackStack()
+            }
+        }
+
+        // Add the callback to the back press dispatcher
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         // Create a location callback
         locationCallback = object : LocationCallback() {
@@ -113,8 +128,21 @@ class TrackFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun drawRoute(origin: LatLng, destination: LatLng) {
+        val distanceInKm = calculateDistance(origin, destination)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val navigationMode = sharedPreferences.getString("navigation_mode", "driving") ?: "driving"
+        val defaultNavigationMode = when (navigationMode) {
+            "Transporte Público" -> "transit"
+            "Bicicleta" -> "bicycling"
+            else -> "driving"
+        }
+
+
+        // Determine mode based on distance
+        val mode = if (distanceInKm > 5) defaultNavigationMode else "walking"
+
         // Use the Directions API to get route data
-        val url = getDirectionsUrl(origin, destination)
+        val url = getDirectionsUrl(origin, destination, mode)
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
 
@@ -129,15 +157,15 @@ class TrackFragment : Fragment(), OnMapReadyCallback {
 
                         for (i in 0 until routes.length()) {
                             val legs = routes.getJSONObject(i).getJSONArray("legs")
+                            val leg = legs.getJSONObject(0)
+                            val distance = leg.getJSONObject("distance").getString("text")
+                            val duration = leg.getJSONObject("duration").getString("text")
                             for (j in 0 until legs.length()) {
                                 val steps = legs.getJSONObject(j).getJSONArray("steps")
                                 for (k in 0 until steps.length()) {
                                     val polyline = steps.getJSONObject(k).getJSONObject("polyline").getString("points")
-                                    val step = steps.getJSONObject(j)
-                                    val distance = step.getJSONObject("distance").getString("text")
-                                    val duration = step.getJSONObject("duration").getString("text")
                                     points.addAll(decodePolyline(polyline))
-                                    updateDistanceAndDuration(distance, duration)
+                                    updateDistanceAndDuration(distance, duration, mode)
                                 }
                             }
                         }
@@ -159,16 +187,42 @@ class TrackFragment : Fragment(), OnMapReadyCallback {
         })
     }
 
-    private fun updateDistanceAndDuration(distance: String, duration: String) {
-        textview.text = "\uD83D\uDEB6 Distancia: $distance   Duración: $duration"
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Cancel the ongoing request if any
+        call?.cancel()
     }
 
-    private fun getDirectionsUrl(origin: LatLng, destination: LatLng): String {
+    private fun updateDistanceAndDuration(distance: String, duration: String, mode: String) {
+        val emoji = when (mode) {
+            "driving" -> "\uD83D\uDE97"
+            "walking" -> "\uD83D\uDEB6"
+            "Bicicleta" -> "\uD83D\uDEB2"
+            else -> "\uD83D\uDE8C"
+        }
+        textview.text = "$emoji Distancia: $distance   Duración: $duration"
+    }
+
+    private fun getDirectionsUrl(origin: LatLng, destination: LatLng, mode: String): String {
         val strOrigin = "origin=${origin.latitude},${origin.longitude}"
         val strDest = "destination=${destination.latitude},${destination.longitude}"
-        val mode = "mode=walking"
-        val parameters = "$strOrigin&$strDest&$mode&key=AIzaSyCwCJfKV_0vQNbQuE_SEW7t4UAL_yiJiLE"
+        val parameters = "$strOrigin&$strDest&mode=$mode&key=AIzaSyCwCJfKV_0vQNbQuE_SEW7t4UAL_yiJiLE"
         return "https://maps.googleapis.com/maps/api/directions/json?$parameters"
+    }
+
+    private fun calculateDistance(startP: LatLng, endP: LatLng): Double {
+        val radius = 6371 // radius of earth in Km
+        val lat1 = startP.latitude
+        val lng1 = startP.longitude
+        val lat2 = endP.latitude
+        val lng2 = endP.longitude
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lng2 - lng1)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return radius * c
     }
 
     private fun decodePolyline(encoded: String): List<LatLng> {

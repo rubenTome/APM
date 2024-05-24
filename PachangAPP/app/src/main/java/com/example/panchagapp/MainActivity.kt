@@ -2,9 +2,14 @@ package com.example.panchagapp
 
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.net.Uri
 import com.bumptech.glide.Glide
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +24,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -57,7 +63,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    SensorEventListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -66,7 +73,10 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private lateinit var drawerlayout: DrawerLayout
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var sensorManager: SensorManager
+    private var lightSensor: Sensor? = null
     private var isFragmentOpen = false
+    private var currentBrightness = -1f // Initial brightness value
 
     data class WeatherData(
         val name: String,
@@ -93,12 +103,14 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val username = intent.getStringExtra("Username")
         val photo = intent.getStringExtra("Photo")
 
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
 
-
-
+        if (lightSensor == null) {
+            Toast.makeText(this, "No hay sensor de luz, no se ajustará el brillo", Toast.LENGTH_SHORT).show()
+        }
 
         mAuth = FirebaseAuth.getInstance()
-
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_clientid))
@@ -106,9 +118,6 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             .build()
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-
-
 
         val navView: BottomNavigationView = binding.navView
         val toolbar: Toolbar = binding.toolbar
@@ -128,10 +137,8 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 .circleCrop()
                 .into(headerview.findViewById(R.id.headerphoto))
         } else {
-            // If no photo is available, you can set a placeholder image
             headerview.findViewById<ImageView>(R.id.headerphoto).setImageResource(R.drawable.baseline_account_circle_24)
         }
-
 
         setSupportActionBar(toolbar)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
@@ -175,8 +182,6 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
 
 
-
-
     private fun signOutAndStartSignInActivity() {
         mAuth.signOut()
 
@@ -200,9 +205,7 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     .commit()
             }
             R.id.sidenav_settings -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentlayout, SettingsFragment())
-                    .commit()
+                findNavController(R.id.nav_host_fragment).navigate(R.id.settingsFragment)
             }
             R.id.sidenav_share -> {
                shareApp()
@@ -249,6 +252,43 @@ class   MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        lightSensor?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL) }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.let {
+            if (it.sensor.type == Sensor.TYPE_LIGHT) {
+                val lightValue = it.values[0]
+                //Filtro paso bajo
+                val smoothedLightValue = smoothValue(lightValue)
+                adjustBrightness(smoothedLightValue)
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    }
 
 
+    private fun smoothValue(rawValue: Float): Float {
+        val alpha = 0.1f
+        currentBrightness = currentBrightness * (1 - alpha) + rawValue * alpha
+        return currentBrightness
+    }
+
+    private fun adjustBrightness(lightValue: Float) {
+        val layoutParams = window.attributes
+        layoutParams.screenBrightness = lightValue / SensorManager.LIGHT_FULLMOON
+        window.attributes = layoutParams
+    }
 }
+
+
+

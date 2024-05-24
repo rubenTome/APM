@@ -9,12 +9,17 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+    <string-array name="navigation_modes">
+        <item>Coche</item>
+        <item>Bicicleta</item>
+        <item>Transporte Público</item>
 
-    <string-array name="directions_array">
-        <item>En Coche</item>
-        <item>Andando</item>
-        <item>En Bici</item>
-        <item>Transporte público</item>
     </string-array>
+    <string-array name="navigation_modes_values">
+        <item>Coche</item>
+        <item>Bicicleta</item>
+        <item>Transporte Público</item>
+    </string-array>
+
 
 </resources>

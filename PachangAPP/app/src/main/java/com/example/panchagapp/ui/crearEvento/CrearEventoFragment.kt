@@ -194,7 +194,10 @@ class CrearEventoFragment : Fragment() {
 
             if (nombreevento.isNotEmpty() && date.isNotEmpty() && hour.isNotEmpty() && maxPlayers.isNotEmpty()) {
                 val teams = adapterrv.dataList.map { it.teamTitle }
-                agregarEvento(date, hour, "HOLA", maxPlayers.toInt(), nombreevento, spinneroption, teams )
+                showDescriptionInputDialog { enteredText ->
+                    agregarEvento(date, hour, enteredText , maxPlayers.toInt(), nombreevento, spinneroption, teams )
+                }
+
             } else {
                 // Handle the case when maxPlayers is empty or show a validation error
                 Toast.makeText(
@@ -234,6 +237,25 @@ class CrearEventoFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Please enter a name", Toast.LENGTH_SHORT).show()
             }
+        }
+        dialogBuilder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog = dialogBuilder.create()
+        dialog.show()
+    }
+
+    private fun showDescriptionInputDialog(callback: (String) -> Unit) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val inflater = requireActivity().layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_input_name, null)
+        val editTextName = dialogView.findViewById<EditText>(R.id.editTextName)
+        editTextName.hint = "Ej. Traer balon"
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.setTitle("Introduzca comentarios si quiere")
+        dialogBuilder.setPositiveButton("Añadir") { dialog, which ->
+            val enteredName = editTextName.text.toString().trim()
+            callback(enteredName)
         }
         dialogBuilder.setNegativeButton("Cancel") { dialog, which ->
             dialog.dismiss()
@@ -371,6 +393,8 @@ class CrearEventoFragment : Fragment() {
             teamRef.setValue(teamData)
         }
     }
+
+
 
 
 
