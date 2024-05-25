@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?backgroundColor">
 
     <TextView
         android:id="@+id/currentplayers"
@@ -13,7 +13,7 @@
         android:layout_height="38dp"
         android:layout_marginStart="20dp"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="?colorOnBackground"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Como llegar"
-        android:background="@color/primaryLightColor"
+        android:background="?colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.949"
@@ -78,7 +78,7 @@
             android:layout_marginStart="19dp"
             android:layout_marginEnd="21dp"
             android:layout_marginBottom="9dp"
-            android:textColor="@color/primaryTextColor"></TextView>
+            android:textColor="@color/primaryTextColor" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -101,7 +101,7 @@
         android:background="#40001524"
         android:paddingLeft="20dp"
         android:text="Evento 1"
-        android:textColor="@color/white"
+        android:textColor="?colorOnBackground"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/eventphoto"
@@ -146,7 +146,7 @@
         android:text="/"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="?colorOnBackground"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -161,7 +161,7 @@
         android:layout_height="38dp"
         android:layout_marginStart="76dp"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="?colorOnBackground"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -175,7 +175,7 @@
         android:layout_height="38dp"
         android:text="inscritos"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="?colorOnBackground"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -207,7 +207,7 @@
         android:layout_height="166dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@color/primaryLightColor"
+        android:background="@drawable/border_rounded"
         android:text="Comentarios por administador del evento"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

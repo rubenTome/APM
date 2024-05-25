@@ -15,6 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="?backgroundColor"
+            app:titleTextColor="?colorOnBackground"
+            app:tint="?colorOnBackground"
             app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="?android:attr/windowBackground"
+            android:background="?backgroundColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -55,8 +57,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
+        app:itemIconTint="?colorOnBackground"
+        app:itemTextColor="?colorOnBackground"
         app:defaultNavHost="true"
         app:menu="@menu/side_menu">
 
@@ -77,13 +79,14 @@
                 android:layout_height="24dp"
                 android:layout_gravity="left"
                 android:gravity="center_vertical"
-                android:src="@drawable/logout"/>
+                android:src="@drawable/logout"
+                app:tint="?colorOnBackground" />
             <TextView
                 android:id="@+id/logouttv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:textColor="@color/black"
+                android:textColor="?colorOnBackground"
                 android:textStyle="bold"
                 android:gravity="center_vertical"
                 android:textSize="16sp"

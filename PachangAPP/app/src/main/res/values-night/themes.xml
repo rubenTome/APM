@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.PanchagAPP" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/primaryColor</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
@@ -13,9 +13,9 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <!-- Primary background color. -->
-        <item name="backgroundColor">@color/white</item>
+        <item name="backgroundColor">@color/material_dynamic_neutral_variant10</item>
         <item name="android:panelColorBackground">@color/material_dynamic_neutral70</item>
-        <item name="colorOnBackground">@color/greyblue</item>
+        <item name="colorOnBackground">@color/white</item>
         <!-- Customize your theme here. -->
     </style>
   <!-- Base application theme. -->

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="?backgroundColor"
         android:clipToPadding="false"
         android:outlineProvider="paddedBounds">
 
@@ -19,6 +19,7 @@
             android:id="@+id/recyclerViewTeams"
             android:layout_width="match_parent"
             android:layout_height="262dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -42,28 +43,13 @@
             app:layout_constraintVertical_bias="0.936" />
 
         <TextView
-            android:id="@+id/textviewhour"
-            android:layout_width="150dp"
-            android:layout_height="28dp"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="12dp"
-            android:text="Hora:"
-            android:textColor="?colorPrimary"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.757"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
-
-        <TextView
             android:id="@+id/textViewequipos"
             android:layout_width="200dp"
             android:layout_height="28dp"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:text="Equipos:"
-            android:textColor="?colorPrimary"
+            android:textColor="?colorPrimaryVariant"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -86,25 +72,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-        <EditText
-            android:id="@+id/editTextDate"
-            android:layout_width="151dp"
-            android:layout_height="43dp"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/border_rounded"
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="EJ: 01-12-2000"
-            android:padding="10dp"
-            app:layout_constraintEnd_toStartOf="@+id/editTextHour"
-            app:layout_constraintHorizontal_bias="0.038"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="0dp"
@@ -118,55 +85,87 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="150dp"
-            android:layout_height="28dp"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="12dp"
-            android:text="Fecha:"
-            android:textColor="?colorPrimary"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textviewhour"
-            app:layout_constraintHorizontal_bias="0.0"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="150dp"
+                android:layout_height="28dp"
+                android:layout_marginHorizontal="40dp"
+                android:text="Fecha:"
+                android:textColor="?colorPrimaryVariant"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textviewhour"
+                android:layout_width="150dp"
+                android:layout_height="28dp"
+                android:layout_marginHorizontal="40dp"
+                android:text="Hora:"
+                android:textColor="?colorPrimaryVariant"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextDate"
+                android:layout_width="151dp"
+                android:layout_height="43dp"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/border_rounded"
+                android:clickable="true"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="EJ: 01-12-2000"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            <EditText
+                android:id="@+id/editTextHour"
+                android:layout_width="151dp"
+                android:layout_height="43dp"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/border_rounded"
+                android:clickable="true"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="EJ: 12:00"
+                android:inputType="date"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textviewhour" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="25dp"
             android:text="Formato"
-            android:textColor="?colorPrimary"
+            android:textColor="?colorPrimaryVariant"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nombreeventotv" />
-
-        <EditText
-            android:id="@+id/editTextHour"
-            android:layout_width="151dp"
-            android:layout_height="43dp"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="68dp"
-            android:background="@drawable/border_rounded"
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="EJ: 12:00"
-            android:inputType="date"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.982"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nombreeventotv"
@@ -186,51 +185,43 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="25dp"
             android:text="Capacidad Maxima:"
-            android:textColor="?colorPrimary"
+            android:textColor="?colorPrimaryVariant"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addTeamButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="200dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="12dp"
             android:src="@drawable/baseline_add_24"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerViewTeams"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.175"
+            app:layout_constraintHorizontal_bias="0.337"
             app:layout_constraintStart_toEndOf="@+id/textViewequipos"
             app:layout_constraintTop_toBottomOf="@+id/editTextNumber"
-            app:layout_constraintVertical_bias="0.571" />
+            app:backgroundTint="?colorPrimary"
+            app:tint="?colorOnPrimary"/>
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="10dp"
             android:text=" Nombre del evento"
             android:textAlignment="textStart"
-            android:textColor="?colorPrimary"
+            android:textColor="?colorPrimaryVariant"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="-19dp"></LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
