@@ -185,7 +185,8 @@ class inscribirseTorneoFragment : Fragment() {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val isPlayerAlreadyParticipant = dataSnapshot.children.any { it.getValue(String::class.java) == authenticatedPlayerId }
                         if (!isPlayerAlreadyParticipant) {
-                            teamsRef.child(args.eventName).child(teamName).child("participants").setValue(authenticatedPlayerId)
+                            val participantCount = dataSnapshot.childrenCount
+                            teamsRef.child(args.eventName).child(teamName).child("participants").child(participantCount.toString()).setValue(authenticatedPlayerId)
                             Toast.makeText(activity, "Inscrito en $teamName", Toast.LENGTH_SHORT).show()
                             findNavController().navigate(R.id.action_navigation_torneo_to_navigation_home)
                         } else {
