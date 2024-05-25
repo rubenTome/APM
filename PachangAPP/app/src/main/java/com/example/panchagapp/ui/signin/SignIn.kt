@@ -99,7 +99,7 @@ class SignIn : AppCompatActivity() {
                     val isNewUser = task.result?.additionalUserInfo?.isNewUser ?: false
                     if (isNewUser) {
 
-                       agregarplayer(user?.displayName!!,"","",0,"",0,user?.photoUrl.toString())
+                       agregarplayer(user?.displayName!!, user?.uid!!,"","",0,"",0,user?.photoUrl.toString())
                     }
 
                     Toast.makeText(this, "Signed in as ${user?.displayName}", Toast.LENGTH_SHORT).show()
@@ -139,7 +139,7 @@ class SignIn : AppCompatActivity() {
 
 
 
-    private fun agregarplayer(nombre: String, nickname: String, position: String, stats: Int, team: String, totalpoints: Int, profilePic: String) {
+    private fun agregarplayer(nombre: String, idplayer: String, nickname: String, position: String, stats: Int, team: String, totalpoints: Int, profilePic: String) {
 
        // List stats
         // Obtener referencia a la base de datos
@@ -152,6 +152,7 @@ class SignIn : AppCompatActivity() {
                 // Crear el nuevo evento
                 val nuevoEvento = mapOf(
                     "name" to nombre,
+                    "idplayer" to idplayer,
                     "nickname" to nickname,
                     "playablePos" to position,
                     "stats" to stats,
