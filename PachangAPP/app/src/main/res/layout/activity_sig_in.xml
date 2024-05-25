@@ -20,7 +20,8 @@
         android:src="@drawable/football_game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorOnBackground" />
 
     <TextView
         android:id="@+id/textView8"
@@ -32,7 +33,7 @@
         android:layout_alignParentEnd="true"
         android:text="PanchagAPP"
         android:textAlignment="center"
-        android:textColor="@color/deepblue"
+        android:textColor="?colorOnBackground"
         android:textSize="40dp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +68,7 @@
             android:elevation="0dp"
             android:text="Sign up with Google"
             android:textAllCaps="false"
-            android:textColor="?backgroundColor"
+            android:textColor="?colorOnPrimary"
             android:textSize="16sp" />
 
     </LinearLayout>
