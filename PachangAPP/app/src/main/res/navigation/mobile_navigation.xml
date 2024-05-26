@@ -14,8 +14,7 @@
             app:destination="@id/navigation_listaeventos"
             app:enterAnim="@anim/slide_in_bottom"
             app:exitAnim="@anim/slide_out_bottom"
-            app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="true">
+            app:popUpTo="@id/navigation_home">
         <argument
             android:name="Location"
             app:argType="string" />
@@ -23,8 +22,7 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_evento2"
             app:destination="@id/navigation_evento"
-            app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="true">
+            app:popUpTo="@id/navigation_home">
             <argument
                 android:name="EventName"
                 app:argType="string" />
@@ -32,14 +30,12 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_creareventos"
             app:destination="@id/navigation_creareventos"
-            app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="true">
+            app:popUpTo="@id/navigation_home">
         </action>
         <action
             android:id="@+id/action_navigation_home_to_navigation_torneo"
             app:destination="@id/navigation_torneo"
-            app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="true">
+            app:popUpTo="@id/navigation_home">
             <argument
                 android:name="EventName"
                 app:argType="string" />
@@ -54,8 +50,7 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_profile"
             app:destination="@id/navigation_profile"
-            app:popUpTo="@id/navigation_dashboard"
-            app:popUpToInclusive="true">
+            app:popUpTo="@id/navigation_dashboard">
             <argument
                 android:name="playername"
                 app:argType="string" />
@@ -86,13 +81,11 @@
         <action
             android:id="@+id/action_navigation_notifications_to_navigation_historial"
             app:destination="@id/navigation_historial"
-            app:popUpTo="@id/navigation_notifications"
-            app:popUpToInclusive="true"/>
+            app:popUpTo="@id/navigation_notifications" />
         <action
             android:id="@+id/action_navigation_notifications_to_navigation_historialequipo"
             app:destination="@id/navigation_historialequipo"
-            app:popUpTo="@id/navigation_notifications"
-            app:popUpToInclusive="true"/>
+            app:popUpTo="@id/navigation_notifications" />
     </fragment>
 
     <fragment
