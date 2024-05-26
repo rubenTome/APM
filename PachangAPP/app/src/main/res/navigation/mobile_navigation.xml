@@ -92,7 +92,11 @@
             android:id="@+id/action_navigation_notifications_to_navigation_historialequipo"
             app:destination="@id/navigation_historialequipo"
             app:popUpTo="@id/navigation_notifications"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true">
+            <argument
+                android:name="eventTitle"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
