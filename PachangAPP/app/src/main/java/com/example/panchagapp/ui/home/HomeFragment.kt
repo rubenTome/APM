@@ -138,6 +138,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+        map.clear()
         enableMyLocation()
         map.setOnMapClickListener { latLng ->
             if (!isMarkerPlaced) {
