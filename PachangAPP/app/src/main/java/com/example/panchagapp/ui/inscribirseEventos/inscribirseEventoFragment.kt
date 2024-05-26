@@ -161,7 +161,8 @@ class inscribirseEventoFragment : Fragment() {
                                 // Check if the player is already in the event's player list
                                 val playerAlreadyInList = dataSnapshot.child(eventId).child("players").children.any { it.getValue(String::class.java) == currentUserUid }
                                 if (!playerAlreadyInList) {
-                                    eventRef.child("players").push().setValue(currentUserUid)
+                                    val participantCount = dataSnapshot.childrenCount
+                                    eventRef.child("players").child(participantCount.toString()).setValue(currentUserUid)
                                         .addOnCompleteListener { task ->
                                             if (task.isSuccessful) {
                                                 // Navigation and toast message after successfully adding the player
