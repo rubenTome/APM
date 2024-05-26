@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,8 +70,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         database = FirebaseDatabase.getInstance().reference.child("events")
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -81,6 +78,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val eventButton = root.findViewById<Button>(R.id.eventbutton)
+        eventButton.isEnabled = isMarkerPlaced
         val listButton = root.findViewById<Button>(R.id.listbutton)
         createFragment()
 
@@ -140,8 +138,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        enableMyLocation()
         map.clear()
+        enableMyLocation()
         map.setOnMapClickListener { latLng ->
             if (!isMarkerPlaced) {
                 selectedMarker = map.addMarker(MarkerOptions().position(latLng))
@@ -207,29 +205,25 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when (requestCode) {
-            LOCATION_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted, enable location and reload the fragment
-                    map.isMyLocationEnabled = true
-                    map.uiSettings.isMyLocationButtonEnabled = true
-                    fusedLocationClient.lastLocation
-                        .addOnSuccessListener { location ->
-                            location?.let {
-                                currentLocation = it
-                                val currentLatLng = LatLng(it.latitude, it.longitude)
-                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
-                                startLocationUpdates()
-                                loadMarkersFromFirebase()
-                            }
+        when(requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                map.isMyLocationEnabled = true
+                map.uiSettings.isMyLocationButtonEnabled = true
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location ->
+                        location?.let {
+                            currentLocation = it
+                            val currentLatLng = LatLng(it.latitude, it.longitude)
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                            startLocationUpdates()
+                            loadMarkersFromFirebase()
                         }
-                    findNavController().navigateUp() // Navigate back to the same fragment
-                } else {
-                    // Permission denied, inform the user
-                    Toast.makeText(requireContext(), "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
-                }
+                    }
+
+            } else {
+                Toast.makeText(requireContext(), "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
             }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults) // Call super for other request codes
+            else -> {}
         }
     }
 
@@ -273,14 +267,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
                         val distancePreference = sharedPreferences.getString("markersdistance", "5")?.toDoubleOrNull() ?: 5.0
 
-
                         if (distance <= (distancePreference * 1000)) {
                             val markerOptions = MarkerOptions().position(LatLng(lat, lon)).icon(markerIcon)
                             val marker = map.addMarker(markerOptions)
                             marker?.tag = event
                             markerList.add(markerOptions)
-
                         }
+
                     }
                 }
 
