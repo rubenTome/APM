@@ -1,14 +1,20 @@
 package com.example.panchagapp.ui.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.panchagapp.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 
 /**
  * A simple [Fragment] subclass.
@@ -30,6 +36,8 @@ class HistorialEquipoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
     }
 
     override fun onCreateView(
@@ -42,17 +50,74 @@ class HistorialEquipoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val eventbutton = view.findViewById<Button>(R.id.eventbutton)
-        dataInitialize()
+
+
         val layoutManager = LinearLayoutManager(context)
+        historialArrayList = arrayListOf<HistorialDataClass>()
         recyclerView = view.findViewById(R.id.historialrv)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         adapter = HistorialAdapterClass(historialArrayList)
         recyclerView.adapter = adapter
+
+
+        val eventName = arguments?.getString("eventTitle")
+
+
+        eventName?.let { name ->
+
+            val casualMatchesRef = FirebaseDatabase.getInstance().getReference("casualMatches").child(name)
+            casualMatchesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+
+                        val match = dataSnapshot.getValue<Match>()
+                        match?.let {
+                            historialArrayList.add(HistorialDataClass(
+                                team1Image = R.drawable.baseline_account_circle_24,
+                                team1Name = it.team1 ?: "",
+                                result = it.score ?: "",
+                                team2Name = it.team2 ?: "",
+                                team2Image = R.drawable.baseline_account_circle_24
+                            ))
+                        }
+                        adapter.notifyDataSetChanged()
+                    } else {
+
+                        val tournamentMatchesRef = FirebaseDatabase.getInstance().getReference("tournamentMatches").child(name)
+                        tournamentMatchesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(tournamentSnapshot: DataSnapshot) {
+                                if (tournamentSnapshot.exists()) {
+
+                                    val matches = tournamentSnapshot.children.mapNotNull { it.getValue<Match>() }
+                                    matches.forEach { match ->
+                                        historialArrayList.add(HistorialDataClass(
+                                            team1Image = R.drawable.baseline_account_circle_24,
+                                            team1Name = match.team1 ?: "",
+                                            result = match.score ?: "",
+                                            team2Name = match.team2 ?: "",
+                                            team2Image = R.drawable.baseline_account_circle_24
+                                        ))
+                                    }
+                                    adapter.notifyDataSetChanged()
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                Log.e("HistorialEquipoFragment", "Failed to read tournament matches", databaseError.toException())
+                            }
+                        })
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("HistorialEquipoFragment", "Failed to read casual matches", databaseError.toException())
+                }
+            })
+        }
     }
 
-        companion object {
+    companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             HistorialEquipoFragment().apply {
@@ -61,42 +126,11 @@ class HistorialEquipoFragment : Fragment() {
             }
     }
 
-
-    private fun dataInitialize() {
-        historialArrayList = arrayListOf<HistorialDataClass>()
-        team1imagelist = arrayOf(
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-        )
-        team2imagelist = arrayOf(
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-            R.drawable.baseline_account_circle_24,
-        )
-
-        teamnamelist = arrayOf(
-            "Equipo 1",
-            "Equipo 2",
-            "Equipo 3",
-        )
-        resultList = arrayOf(
-            "1-2",
-            "2-3",
-            "0-3",
-        )
-
-        for (i in team1imagelist.indices) {
-            val dataClass = HistorialDataClass(
-                team1imagelist[i],
-                teamnamelist[i],
-                resultList[i],
-                teamnamelist[i],
-                team1imagelist[i]
-            )
-            historialArrayList.add(dataClass)
-        }
-    }
+    data class Match(
+        val score: String? = null,
+        val team1: String? = null,
+        val team2: String? = null
+    )
 
 
 }
