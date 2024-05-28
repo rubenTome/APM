@@ -31,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-private lateinit var lat : String
+private lateinit var lat: String
 private lateinit var lon: String
 
 /**
@@ -47,6 +47,7 @@ class inscribirseEventoFragment : Fragment() {
     private lateinit var weatherService: WeatherService
     val database = FirebaseDatabase.getInstance()
     val eventRef = database.getReference("events")
+    val playersRef = database.getReference("players")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,42 +71,43 @@ class inscribirseEventoFragment : Fragment() {
     }
 
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            var tvname = view.findViewById<TextView>(R.id.tveventname)
-            var inscribirseButton = view.findViewById<Button>(R.id.buttoninscribirse)
-            var trackbutton = view.findViewById<Button>(R.id.trackbutton)
-            var tveventdate = view.findViewById<TextView>(R.id.tveventdate)
-            var maxplayerstv = view.findViewById<TextView>(R.id.maxplayers)
-            var currentplayerstv = view.findViewById<TextView>(R.id.currentplayers)
-            var descriptiontv = view.findViewById<TextView>(R.id.textView3)
-            var hourtv = view.findViewById<TextView>(R.id.tveventhora)
-            val bundle = arguments
-            lat = ""
-            lon = ""
-            if (bundle == null) {
-                Log.d("Confirmation", "FragmentEvento sin arguments")
-                return
-            }
-            val args = inscribirseEventoFragmentArgs.fromBundle(bundle)
-            if(args.eventName.isNullOrBlank()){
-                tvname.text = "Evento sin Nombre"
-            }
-            else {
-                tvname.text = args.eventName
-                getEventInfobyName(args.eventName) {
-                    eventData -> if (eventData != null) {
-                        val date = eventData.get("datatime") as? String
-                        val hour = eventData.get("hour") as? String
-                        val description = eventData.get("description") as? String
-                        val maxplayers = eventData.get("maxPlayers") as? Long
-                        val location = eventData.get("location") as? Map<String, Any>
-                        val players = eventData.get("players") as? List<*>
-                        val playerCount = players?.size ?: 0
-                         lat = location?.get("lat") as String
-                         lon = location?.get("lon") as String
-                        GlobalScope.launch(Dispatchers.IO) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var tvname = view.findViewById<TextView>(R.id.tveventname)
+        var inscribirseButton = view.findViewById<Button>(R.id.buttoninscribirse)
+        var trackbutton = view.findViewById<Button>(R.id.trackbutton)
+        var tveventdate = view.findViewById<TextView>(R.id.tveventdate)
+        var maxplayerstv = view.findViewById<TextView>(R.id.maxplayers)
+        var currentplayerstv = view.findViewById<TextView>(R.id.currentplayers)
+        var descriptiontv = view.findViewById<TextView>(R.id.textView3)
+        var hourtv = view.findViewById<TextView>(R.id.tveventhora)
+
+        val bundle = arguments
+        lat = ""
+        lon = ""
+        if (bundle == null) {
+            Log.d("Confirmation", "FragmentEvento sin arguments")
+            return
+        }
+        val args = inscribirseEventoFragmentArgs.fromBundle(bundle)
+
+        if (args.eventName.isNullOrBlank()) {
+            tvname.text = "Evento sin Nombre"
+        } else {
+            tvname.text = args.eventName
+            getEventInfobyName(args.eventName) { eventData ->
+                if (eventData != null) {
+                    val date = eventData.get("datatime") as? String
+                    val hour = eventData.get("hour") as? String
+                    val description = eventData.get("description") as? String
+                    val maxplayers = eventData.get("maxPlayers") as? Long
+                    val location = eventData.get("location") as? Map<String, Any>
+                    val players = eventData.get("players") as? List<*>
+                    lat = location?.get("lat") as String
+                    lon = location?.get("lon") as String
+                    GlobalScope.launch(Dispatchers.IO) {
                         try {
+                            countPlayers(args.eventName)
                             val weatherData = weatherService.getWeather(lat, lon, apiKey)
                             withContext(Dispatchers.Main) {
                                 updateUI(view, weatherData)
@@ -113,7 +115,6 @@ class inscribirseEventoFragment : Fragment() {
                                 tveventdate.text = date
                                 maxplayerstv.text = maxplayers.toString()
                                 descriptiontv.text = description
-                                currentplayerstv.text = playerCount.toString()
                             }
 
                         } catch (e: Exception) {
@@ -122,66 +123,92 @@ class inscribirseEventoFragment : Fragment() {
                         }
 
 
-
                     }
 
-                    } else {
-                        // Player not found
-                        Toast.makeText(requireContext(), "Event not found.", Toast.LENGTH_SHORT).show()
-                        println("Event not found.")
-                        // Navigate back to previous fragment
-                        findNavController().popBackStack()
-                    }
+                } else {
+                    // Player not found
+                    Toast.makeText(requireContext(), "Event not found.", Toast.LENGTH_SHORT).show()
+                    println("Event not found.")
+                    // Navigate back to previous fragment
+                    findNavController().popBackStack()
                 }
             }
+        }
 
-            inscribirseButton.setOnClickListener {
-                // Get the event name from wherever it's stored
-                val eventName = args.eventName
+        inscribirseButton.setOnClickListener {
+            // Get the event name from wherever it's stored
+            val eventName = args.eventName
 
-                // Get a reference to the events node in the database
-                val eventsRef = FirebaseDatabase.getInstance().getReference("events")
+            // Get a reference to the events node in the database
+            val eventsRef = FirebaseDatabase.getInstance().getReference("events")
 
 
-                // Perform a query to find the event by its name
-                eventsRef.orderByChild("name").equalTo(eventName).addListenerForSingleValueEvent(object : ValueEventListener {
+            // Perform a query to find the event by its name
+            eventsRef.orderByChild("name").equalTo(eventName)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             // Get the event ID from the dataSnapshot
                             val eventId = dataSnapshot.children.first().key
 
-                            // Get a reference to the event node in the database using the event ID
-                            val eventRef = FirebaseDatabase.getInstance().getReference("events").child(eventId!!)
+                            val currentPlayers =
+                                dataSnapshot.child(eventId!!).child("players").childrenCount
+                            val maxPlayers =
+                                dataSnapshot.child(eventId).child("maxPlayers").value as Long
+                            if (currentPlayers < maxPlayers) {
+                                val eventRef = FirebaseDatabase.getInstance().getReference("events")
+                                    .child(eventId!!)
+                                val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
-                            // Get the current user's UID
-                            val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
-
-                            // Check if the current user's UID is not null
-                            if (currentUserUid != null) {
-                                // Check if the player is already in the event's player list
-                                val playerAlreadyInList = dataSnapshot.child(eventId).child("players").children.any { it.getValue(String::class.java) == currentUserUid }
-                                if (!playerAlreadyInList) {
-                                    eventRef.child("players").push().setValue(currentUserUid)
-                                        .addOnCompleteListener { task ->
-                                            if (task.isSuccessful) {
-                                                // Navigation and toast message after successfully adding the player
-                                                findNavController().navigate(R.id.action_navigation_evento_to_navigation_home)
-                                                Toast.makeText(activity, "Inscrito en evento!", Toast.LENGTH_SHORT).show()
-                                            } else {
-                                                Toast.makeText(activity, "Error al inscribirse en el evento.", Toast.LENGTH_SHORT).show()
+                                if (currentUserUid != null) {
+                                    val playerAlreadyInList = dataSnapshot.child(eventId)
+                                        .child("players").children.any { it.getValue(String::class.java) == currentUserUid }
+                                    if (!playerAlreadyInList) {
+                                        eventRef.child("players").push().setValue(currentUserUid)
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    incrementUserPoints(eventId, currentUserUid)
+                                                    findNavController().navigate(R.id.action_navigation_evento_to_navigation_home)
+                                                    Toast.makeText(
+                                                        activity,
+                                                        "Inscrito en evento!",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                } else {
+                                                    Toast.makeText(
+                                                        activity,
+                                                        "Error al inscribirse en el evento.",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
                                             }
-                                        }
+                                    } else {
+                                        // Player is already in the event's player list
+                                        Toast.makeText(
+                                            activity,
+                                            "Ya estás inscrito en este evento.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 } else {
-                                    // Player is already in the event's player list
-                                    Toast.makeText(activity, "Ya estás inscrito en este evento.", Toast.LENGTH_SHORT).show()
+                                    // Handle the case when the current user's UID is null (user not authenticated)
+                                    Toast.makeText(
+                                        activity,
+                                        "Usuario no autenticado.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             } else {
-                                // Handle the case when the current user's UID is null (user not authenticated)
-                                Toast.makeText(activity, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    activity,
+                                    "El evento está completo. No se puede inscribir más jugadores.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         } else {
                             // Handle the case when the event with the given name does not exist
-                            Toast.makeText(activity, "Evento no encontrado.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "Evento no encontrado.", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
 
@@ -189,22 +216,67 @@ class inscribirseEventoFragment : Fragment() {
                         println("Operación cancelada: ${databaseError.message}")
                     }
                 })
-            }
-
-
-            trackbutton.setOnClickListener {
-                val action = inscribirseEventoFragmentDirections.actionNavigationEventoToTrackFragment(lat, lon)
-                findNavController().navigate(action)
-                Toast.makeText(activity, "Como llegar a localizacion!", Toast.LENGTH_SHORT).show()
-            }
-
         }
-    private fun updateUI(view: View,weatherData: MainActivity.WeatherData) {
-        view.findViewById<TextView>(R.id.weathertemp).text = "${weatherData.main.temp.toInt() - 273}°C"
+
+
+        trackbutton.setOnClickListener {
+            val action =
+                inscribirseEventoFragmentDirections.actionNavigationEventoToTrackFragment(lat, lon)
+            findNavController().navigate(action)
+            Toast.makeText(activity, "Como llegar a localizacion!", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun incrementUserPoints(eventId: String, userId: String) {
+        val eventRef = FirebaseDatabase.getInstance().getReference("events").child(eventId)
+        eventRef.child("players").orderByChild("idplayer").equalTo(userId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (playerSnapshot in dataSnapshot.children) {
+                            val currentPoints =
+                                playerSnapshot.child("totalPoints").getValue(Int::class.java) ?: 0
+                            playerSnapshot.ref.child("totalPoints").setValue(currentPoints + 20)
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("Firebase", "Failed to read totalPoints", databaseError.toException())
+                }
+            })
+    }
+
+    private fun updateUI(view: View, weatherData: MainActivity.WeatherData) {
+        view.findViewById<TextView>(R.id.weathertemp).text =
+            "${weatherData.main.temp.toInt() - 273}°C"
         val iconUrl = "https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png"
         Glide.with(this).load(iconUrl).into(view.findViewById(R.id.imageView2))
     }
 
+    private fun countPlayers(eventName: String) {
+        val eventsRef = FirebaseDatabase.getInstance().getReference("events")
+        eventsRef.orderByChild("name").equalTo(eventName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (eventSnapshot in dataSnapshot.children) {
+                            val playersSnapshot = eventSnapshot.child("players")
+                            val playerCount = playersSnapshot.childrenCount
+                            view?.findViewById<TextView>(R.id.currentplayers)?.text =
+                                playerCount.toString()
+                        }
+                    } else {
+                        view?.findViewById<TextView>(R.id.currentplayers)?.text = "0"
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("Firebase", "Failed to read player count", databaseError.toException())
+                }
+            })
+    }
 
     fun getEventInfobyName(eventName: String?, callback: (HashMap<String, Any>?) -> Unit) {
         eventRef.orderByChild("name").equalTo(eventName)
@@ -229,8 +301,6 @@ class inscribirseEventoFragment : Fragment() {
                 }
             })
     }
-
-
 
 
     companion object {

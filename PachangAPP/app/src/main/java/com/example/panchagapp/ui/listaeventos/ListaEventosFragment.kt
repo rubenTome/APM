@@ -20,6 +20,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -102,6 +106,10 @@ class ListaEventosFragment : Fragment(){
 
                 for (snapshot in dataSnapshot.children) {
                     val eventName = snapshot.child("name").getValue(String::class.java)
+                    val eventDateStr = snapshot.child("datatime").getValue(String::class.java) ?: continue
+
+                    val eventDate = parseDate(eventDateStr) ?: continue
+                    if (eventDate.before(Date())) continue
                     val eventLatitudeStr = snapshot.child("location").child("lat").getValue(String::class.java)
                     val eventLongitudeStr = snapshot.child("location").child("lon").getValue(String::class.java)
                     val eventLatitude = eventLatitudeStr?.toDoubleOrNull()
@@ -152,6 +160,16 @@ class ListaEventosFragment : Fragment(){
                 Log.w("TAG", "Failed to read value.", error.toException())
             }
         })
+    }
+
+    private fun parseDate(dateStr: String): Date? {
+        return try {
+            val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            format.parse(dateStr)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            null
+        }
     }
 
 

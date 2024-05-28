@@ -31,6 +31,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
@@ -237,7 +241,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         val lon = locationSnapshot.child("lon").getValue(String::class.java)?.toDoubleOrNull() ?: continue
                         val eventType = snapshot.child("type").getValue(String::class.java) ?: continue
                         val eventName = snapshot.child("name").getValue(String::class.java) ?: continue
+                        val eventDateStr = snapshot.child("datatime").getValue(String::class.java) ?: continue
 
+                        val eventDate = parseDate(eventDateStr) ?: continue
+                        if (eventDate.before(Date())) continue
 
                         val bitmapLocation1 = BitmapFactory.decodeResource(resources, R.drawable.location1)
                         val bitmapLocation2 = BitmapFactory.decodeResource(resources, R.drawable.location2)
@@ -281,6 +288,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     Toast.makeText(requireContext(), "Error loading markers", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+    }
+
+    private fun parseDate(dateStr: String): Date? {
+        return try {
+            val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            format.parse(dateStr)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            null
         }
     }
 }

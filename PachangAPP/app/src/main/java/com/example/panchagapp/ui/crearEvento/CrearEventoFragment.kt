@@ -194,9 +194,14 @@ class CrearEventoFragment : Fragment() {
 
             if (nombreevento.isNotEmpty() && date.isNotEmpty() && hour.isNotEmpty() && maxPlayers.isNotEmpty()) {
                 val teams = adapterrv.dataList.map { it.teamTitle }
-                showDescriptionInputDialog { enteredText ->
-                    agregarEvento(date, hour, enteredText , maxPlayers.toInt(), nombreevento, spinneroption, teams )
+                if (spinneroption == "Torneo" && teams.isEmpty()) {
+                    Toast.makeText(requireContext(), "Por favor seleccione al menos un equipo para el torneo", Toast.LENGTH_SHORT).show()
+                } else {
+                    showDescriptionInputDialog { enteredText ->
+                        agregarEvento(date, hour, enteredText , maxPlayers.toInt(), nombreevento, spinneroption, teams )
+                    }
                 }
+
 
             } else {
                 // Handle the case when maxPlayers is empty or show a validation error
@@ -253,7 +258,7 @@ class CrearEventoFragment : Fragment() {
         editTextName.hint = "Ej. Traer balon"
         dialogBuilder.setView(dialogView)
         dialogBuilder.setTitle("Introduzca comentarios si quiere")
-        dialogBuilder.setPositiveButton("Añadir") { dialog, which ->
+        dialogBuilder.setPositiveButton("Continuar") { dialog, which ->
             val enteredName = editTextName.text.toString().trim()
             callback(enteredName)
         }

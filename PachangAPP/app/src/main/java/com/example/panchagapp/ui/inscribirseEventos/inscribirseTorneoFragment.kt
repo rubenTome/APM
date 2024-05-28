@@ -61,6 +61,7 @@ class inscribirseTorneoFragment : Fragment() {
     val database = FirebaseDatabase.getInstance()
     val eventRef = database.getReference("events")
     val teamsRef = database.getReference("teams")
+    val playersRef = database.getReference("players")
 
 
 
@@ -111,11 +112,8 @@ class inscribirseTorneoFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         var tvname = view.findViewById<TextView>(R.id.tveventname)
         var hourtv = view.findViewById<TextView>(R.id.tvtorneohora)
-        var inscribirseButton = view.findViewById<Button>(R.id.buttoninscribirse)
         var trackbutton = view.findViewById<Button>(R.id.trackbutton)
         var tveventdate = view.findViewById<TextView>(R.id.tveventdate)
-        var maxplayerstv = view.findViewById<TextView>(R.id.maxplayers)
-        var currentplayerstv = view.findViewById<TextView>(R.id.currentplayers)
         var descriptiontv = view.findViewById<TextView>(R.id.textView3)
         val bundle = arguments
         lat = ""
@@ -135,7 +133,6 @@ class inscribirseTorneoFragment : Fragment() {
                     val date = eventData.get("datatime") as? String
                     val hour = eventData.get("hour") as? String
                     val description = eventData.get("description") as? String
-                    val maxplayers = eventData.get("maxPlayers") as? Long
                     val location = eventData.get("location") as? Map<String, Any>
                     lat = location?.get("lat") as String
                     lon = location?.get("lon") as String
@@ -181,16 +178,23 @@ class inscribirseTorneoFragment : Fragment() {
                 val teamName = selectedItem.teamTitle.toString()
                 val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
                 val authenticatedPlayerId: String? = currentUser?.uid
-                teamsRef.child(args.eventName).child(teamName).child("participants").addListenerForSingleValueEvent(object : ValueEventListener {
+                teamsRef.child(args.eventName).child(teamName).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val isPlayerAlreadyParticipant = dataSnapshot.children.any { it.getValue(String::class.java) == authenticatedPlayerId }
-                        if (!isPlayerAlreadyParticipant) {
-                            val participantCount = dataSnapshot.childrenCount
-                            teamsRef.child(args.eventName).child(teamName).child("participants").child(participantCount.toString()).setValue(authenticatedPlayerId)
-                            Toast.makeText(activity, "Inscrito en $teamName", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_navigation_torneo_to_navigation_home)
+                        val maxPlayers = dataSnapshot.child("maxPlayers").value as Long
+                        val participantsSnapshot = dataSnapshot.child("participants")
+                        val participantCount = participantsSnapshot.childrenCount
+                        if (participantCount < maxPlayers) {
+                            val isPlayerAlreadyParticipant = participantsSnapshot.children.any { it.getValue(String::class.java) == authenticatedPlayerId }
+                            if (!isPlayerAlreadyParticipant) {
+                                incrementUserPoints(authenticatedPlayerId!!)
+                                teamsRef.child(args.eventName).child(teamName).child("participants").child(participantCount.toString()).setValue(authenticatedPlayerId)
+                                Toast.makeText(activity, "Inscrito en $teamName", Toast.LENGTH_SHORT).show()
+                                findNavController().navigate(R.id.action_navigation_torneo_to_navigation_home)
+                            } else {
+                                Toast.makeText(activity, "Ya está inscrito en $teamName", Toast.LENGTH_SHORT).show()
+                            }
                         } else {
-                            Toast.makeText(activity, "Ya está inscrito en $teamName", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "El equipo $teamName está completo. No se puede inscribir más jugadores.", Toast.LENGTH_SHORT).show()
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -201,12 +205,27 @@ class inscribirseTorneoFragment : Fragment() {
         })
 
 
+
         trackbutton.setOnClickListener {
             val action =
                 inscribirseTorneoFragmentDirections.actionNavigationTorneoToTrackFragment(lat, lon)
             findNavController().navigate(action)
             Toast.makeText(activity, "Como llegar a localizacion!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun incrementUserPoints(userId: String) {
+        val userRef = playersRef.child(userId)
+        userRef.child("totalPoints").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentPoints = dataSnapshot.getValue(Int::class.java) ?: 0
+                userRef.child("totalPoints").setValue(currentPoints + 20)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("Firebase", "Failed to read totalPoints", databaseError.toException())
+            }
+        })
     }
 
     private fun updateUI(view: View, weatherData: MainActivity.WeatherData) {
@@ -242,7 +261,6 @@ class inscribirseTorneoFragment : Fragment() {
     }
 
     fun getTeamsForTournament(tournamentName: String) {
-        // Assuming tournament name is "tour1" for example
         teamsRef.child(tournamentName).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
                 for (teamSnapshot in snapshot.children) {
@@ -265,6 +283,7 @@ class inscribirseTorneoFragment : Fragment() {
             println("Failed to retrieve teams: ${it.message}")
         }
     }
+
 
 
 }

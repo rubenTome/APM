@@ -82,14 +82,13 @@ class NotificationsFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 eventosArrayList.clear()
                 val dateFormat = SimpleDateFormat("dd-MM-YYYY", Locale.getDefault())
-                val calendar = Calendar.getInstance()
 
                 for (snapshot in dataSnapshot.children) {
                     val datetimeString = snapshot.child("datatime").getValue(String::class.java)
 
                     if (datetimeString != null) {
                         val datetime = dateFormat.parse(datetimeString)
-                        if (datetime != null) {
+                        if (datetime != null && isWithinLast7Days(datetime)) {
                             val eventName = snapshot.child("name").getValue(String::class.java)
                             val eventImagename = snapshot.child("type").getValue(String::class.java)
                             val eventImage = when (eventImagename) {
@@ -111,13 +110,17 @@ class NotificationsFragment : Fragment() {
         })
     }
 
-    fun isWithinLast7Days(date: Date): Boolean {
+    private fun isWithinLast7Days(datetime: Date): Boolean {
         val calendar = Calendar.getInstance()
-        calendar.time = date
-        val past7Days = Calendar.getInstance()
-        past7Days.add(Calendar.DAY_OF_YEAR, -7)
-        return !calendar.before(past7Days) && calendar.before(Calendar.getInstance())
+        val today = calendar.time
+
+        val lastWeekCalendar = Calendar.getInstance()
+        lastWeekCalendar.add(Calendar.DAY_OF_YEAR, -6)
+        val lastWeek = lastWeekCalendar.time
+
+        return datetime.after(lastWeek) && datetime.before(today)
     }
+
 
 
     override fun onDestroyView() {

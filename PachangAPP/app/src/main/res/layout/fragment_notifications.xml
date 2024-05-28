@@ -14,7 +14,7 @@
         android:layout_height="32dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="Torneos en activo"
+        android:text="Torneos última semana"
         android:textColor="?colorPrimaryVariant"
         android:textSize="24sp"
         android:textStyle="bold"
