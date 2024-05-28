@@ -81,7 +81,7 @@ class NotificationsFragment : Fragment() {
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 eventosArrayList.clear()
-                val dateFormat = SimpleDateFormat("dd-MM-YYYY", Locale.getDefault())
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
                 for (snapshot in dataSnapshot.children) {
                     val datetimeString = snapshot.child("datatime").getValue(String::class.java)
