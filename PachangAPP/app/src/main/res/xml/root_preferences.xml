@@ -5,7 +5,7 @@
         <EditTextPreference
             android:key="markersdistance"
             android:title="Distancia de Eventos (Km)"
-            android:summary="Distancia en kilometros a la cual los eventos son visibles"
+            android:summary="Distancia en kilometros a la cual los eventos son visibles (5km por defecto)"
             android:defaultValue="5" />
     </PreferenceCategory>
 
