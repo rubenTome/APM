@@ -159,7 +159,6 @@ class inscribirseEventoFragment : Fragment() {
                                 val eventRef = FirebaseDatabase.getInstance().getReference("events")
                                     .child(eventId!!)
                                 val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
-
                                 if (currentUserUid != null) {
                                     val playerAlreadyInList = dataSnapshot.child(eventId)
                                         .child("players").children.any { it.getValue(String::class.java) == currentUserUid }

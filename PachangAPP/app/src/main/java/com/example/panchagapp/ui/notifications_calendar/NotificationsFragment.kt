@@ -71,7 +71,7 @@ class NotificationsFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 val selectedItem = eventosArrayList[position]
                 Toast.makeText(activity, "Seleccionado "+ selectedItem.eventTitle.toString(), Toast.LENGTH_SHORT).show()
-                val action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationHistorialequipo()
+                val action = NotificationsFragmentDirections.actionNavigationNotificationsToNavigationHistorialequipo(selectedItem.eventTitle.toString())
                 findNavController().navigate(action)
             }
         })
