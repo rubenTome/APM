@@ -139,7 +139,7 @@ class TrackFragment : Fragment(), OnMapReadyCallback {
 
 
         // Determine mode based on distance
-        val mode = if (distanceInKm > 5) defaultNavigationMode else "walking"
+        val mode = if (distanceInKm > 1.5) defaultNavigationMode else "walking"
 
         // Use the Directions API to get route data
         val url = getDirectionsUrl(origin, destination, mode)

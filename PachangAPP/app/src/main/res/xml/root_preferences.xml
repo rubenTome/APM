@@ -12,8 +12,8 @@
     <PreferenceCategory android:title="Ajustes de Como LLegar">
         <ListPreference
             android:key="navigation_mode"
-            android:title="Modo por defecto para más de 5 km"
-            android:summary="Con distancias de menos de 5km siempre se mide la duración a pie"
+            android:title="Modo por defecto para más de 1.5 km"
+            android:summary="Con distancias de menos de 1.5km siempre se mide la duración a pie"
             android:defaultValue="walking"
             android:entries="@array/navigation_modes"
             android:entryValues="@array/navigation_modes_values" />

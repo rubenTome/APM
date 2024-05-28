@@ -114,7 +114,7 @@ class inscribirseTorneoFragment : Fragment() {
         var hourtv = view.findViewById<TextView>(R.id.tvtorneohora)
         var trackbutton = view.findViewById<Button>(R.id.trackbutton)
         var tveventdate = view.findViewById<TextView>(R.id.tveventdate)
-        var descriptiontv = view.findViewById<TextView>(R.id.textView3)
+        var descriptiontv = view.findViewById<TextView>(R.id.admincomment)
         val bundle = arguments
         lat = ""
         lon = ""
@@ -144,7 +144,6 @@ class inscribirseTorneoFragment : Fragment() {
                                 hourtv.text = hour
                                 tveventdate.text = date
                                 descriptiontv.text = description
-
                             }
                         } catch (e: Exception) {
                             // Handle exceptions
